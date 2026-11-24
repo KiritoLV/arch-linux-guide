@@ -1,0 +1,55 @@
+site_name: Arch Linux 个人使用指南
+site_description: Arch + 混合显卡 + niri 的实测笔记
+site_author: KiritoLV
+repo_url: https://github.com/KiritoLV/arch-linux-guide
+repo_name: KiritoLV/arch-linux-guide
+copyright: MIT License
+
+theme:
+  name: material
+  language: zh
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: cyan
+      toggle: {icon: material/weather-sunny, name: 浅色}
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: cyan
+      toggle: {icon: material/weather-night, name: 深色}
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - navigation.sections
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+
+nav:
+  - 首页: index.md
+  - 基础:
+      - 01 系统基线: 01-系统基线.md
+      - 02 包管理: 02-包管理.md
+  - 显示与显卡:
+      - 03 显卡与显示: 03-显卡与显示.md
+  - 排错:
+      - 09 排错手册: 09-排错手册.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - tables
+  - toc: {permalink: true}
+  - pymdownx.highlight: {anchor_linenums: true}
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed: {alternate_style: true}
+
+plugins:
+  - search
