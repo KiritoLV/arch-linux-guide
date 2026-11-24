@@ -1,5 +1,5 @@
-site_name: Arch Linux 个人使用指南
-site_description: Arch + 混合显卡 + niri 的实测笔记
+site_name: Arch 排错笔记
+site_description: Arch Linux + 混合显卡 + niri 的实测排错记录：现象 / 排查 / 原因 / 解决办法
 site_author: KiritoLV
 repo_url: https://github.com/KiritoLV/arch-linux-guide
 repo_name: KiritoLV/arch-linux-guide
@@ -24,6 +24,7 @@ theme:
     - navigation.tracking
     - navigation.top
     - navigation.sections
+    - navigation.indexes
     - search.suggest
     - search.highlight
     - content.code.copy
@@ -31,13 +32,29 @@ theme:
 
 nav:
   - 首页: index.md
-  - 基础:
-      - 01 系统基线: 01-系统基线.md
-      - 02 包管理: 02-包管理.md
   - 显示与显卡:
-      - 03 显卡与显示: 03-显卡与显示.md
-  - 排错:
-      - 09 排错手册: 09-排错手册.md
+      - "Chrome 跑核显、niri 跑独显 → 跨卡合成导致撕裂/残影": 显示与显卡/01-跨卡合成导致撕裂.md
+      - "VRR 配了却一直不生效：Proton 游戏的 app_id 不是 `steam_app_*`": 显示与显卡/03-VRR配了却不生效-游戏的app_id不是steam_app.md
+      - "高刷下窗口偶发单帧花屏（NVIDIA）": 显示与显卡/04-高刷下单帧花屏.md
+      - "桌面滑动一顿一顿，过几秒就卡一下（显存掉到 405 MHz）": 显示与显卡/05-桌面滑动一顿一顿-显存掉到405MHz.md
+  - Chrome:
+      - "chrome://gpu 写着 Hardware accelerated，但 `Decoding:` 是空的": Chrome/01-硬解没生效-Decoding是空的.md
+      - "加了 `--use-gl=egl` 之后 Chrome 变成全软件渲染": Chrome/02-use-gl-egl让GPU全软件渲染.md
+      - "看视频时弹幕像低刷新率、晃鼠标才顺": Chrome/03-弹幕看起来刷新率低-晃鼠标才顺.md
+  - MangoHud与性能:
+      - "配了 MangoHud，玩完却找不到 CSV": MangoHud与性能/01-配了MangoHud却找不到CSV.md
+      - "分析帧时间时最容易犯的错：把连续分布读成「VSync 量化」": MangoHud与性能/02-别把连续帧时间读成VSync量化.md
+      - "游戏只有 70 fps 上不去：GPU 满载，不是参数没调好": MangoHud与性能/03-游戏帧数上不去-GPU满载是硬瓶颈.md
+  - 系统与内核:
+      - "改了 niri 配置，哪些要重登、哪些热重载就够": 系统与内核/01-改了niri配置要不要重启.md
+      - "内核参数里两项各出现两次": 系统与内核/02-内核参数出现重复项.md
+      - "pacman 缓存占了 11 G：它同时是降级的唯一退路": 系统与内核/03-pacman缓存占11G-降级与清理.md
+  - 存储:
+      - "NTFS 大文件读到一半 EIO、目录读到某个 inode 就中断": 存储/01-NTFS读到一半EIO.md
+  - 音频:
+      - "录不到系统声音 / `pw-record --target` 指定了却没生效": 音频/01-录不到系统声音.md
+  - 网络:
+      - "测延迟测出 0.0002 s：透明代理劫持了连接": 网络/01-测速出现0.0002s假值.md
 
 markdown_extensions:
   - admonition
