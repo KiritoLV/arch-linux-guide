@@ -501,7 +501,7 @@
   <span class="md-ellipsis">
     
   
-    第三类：游戏黑屏但有声音 —— 跨卡首帧导入失败
+    第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立
   
 
     
@@ -799,9 +799,9 @@
 <ol>
 <li><strong>跨卡合成</strong>：niri 在一块卡上扫描输出、客户端在另一块卡上渲染，缺显式同步 → 闪屏 / 撕裂 / 残影 / 单帧花屏。</li>
 <li><strong>静默偶发卡顿</strong>：频率掉进深睡档，升频来不及 → 几秒顿一下，没有任何日志。</li>
-<li><strong>跨卡首帧失败</strong>：跨卡那条 dma-buf 导入路径没建立好 → 游戏黑屏但声音正常，成功一次后就不再犯。</li>
+<li><strong>跨卡呈现路径没建立</strong>：开机后独显的第一个成功呈现来自 Steam/Proton 内部 → swapchain 创建失败并锁死整个进程，游戏黑屏但声音正常；先在 Proton 之外呈现一次就没事。</li>
 </ol>
-<p>Chrome 的硬解是这两类问题的<strong>常见触发器</strong>：Chromium 不支持 NVIDIA 硬解，独显直连只能软解；有核显时改指核显，硬解是有了，但立刻引入跨卡合成。</p>
+<p>Chrome 的硬解是前两类问题的<strong>常见触发器</strong>：Chromium 不支持 NVIDIA 硬解，独显直连只能软解；有核显时改指核显，硬解是有了，但立刻引入跨卡合成。</p>
 <h2 id="_1">显卡<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -820,8 +820,8 @@
 <td>画面几秒顿一下、滑动先卡后顺，GPU 占用却是高的：卡在升频，不是卡在算力。</td>
 </tr>
 <tr>
-<td><a href="%E6%98%BE%E5%8D%A1/03-%E8%B7%A8%E5%8D%A1%E9%BB%91%E5%B1%8F-%E6%9C%89%E5%A3%B0%E9%9F%B3/">第三类：游戏黑屏但有声音 —— 跨卡首帧导入失败</a></td>
-<td>游戏黑屏但音乐一直在响；先让独显在 wayland 上呈现一次（<code>DRI_PRIME=1 vkcube</code>）就恢复，且恢复后不再犯。</td>
+<td><a href="%E6%98%BE%E5%8D%A1/03-%E8%B7%A8%E5%8D%A1%E9%BB%91%E5%B1%8F-%E6%9C%89%E5%A3%B0%E9%9F%B3/">第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立</a></td>
+<td>游戏黑屏但音乐一直在响；开机后先让独显在 Proton 之外呈现一次（<code>prime-run vkcube</code>），之后一整个会话都正常。</td>
 </tr>
 </tbody>
 </table>

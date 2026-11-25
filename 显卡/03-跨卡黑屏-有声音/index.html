@@ -27,7 +27,7 @@
     
     
       
-        <title>第三类：游戏黑屏但有声音 —— 跨卡首帧导入失败 - Arch 排错笔记</title>
+        <title>第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立 - Arch 排错笔记</title>
       
     
     
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              第三类：游戏黑屏但有声音 —— 跨卡首帧导入失败
+              第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立
             
           </span>
         </div>
@@ -423,7 +423,7 @@
   <span class="md-ellipsis">
     
   
-    第三类：游戏黑屏但有声音 —— 跨卡首帧导入失败
+    第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立
   
 
     
@@ -441,7 +441,7 @@
   <span class="md-ellipsis">
     
   
-    第三类：游戏黑屏但有声音 —— 跨卡首帧导入失败
+    第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立
   
 
     
@@ -864,73 +864,91 @@
   
 
 
-<h1 id="_1">第三类：游戏黑屏但有声音 —— 跨卡首帧导入失败<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h1 id="_1">第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
 <div class="admonition info">
 <p class="admonition-title">一句话</p>
-<p>niri 用核显合成、游戏在 NVIDIA 上渲染时，进游戏整屏黑但声音正常；让独显先在 wayland 上呈现一次（跑一下 <code>vkcube</code>）就恢复，而且<strong>恢复之后不会再犯</strong>。</p>
+<p>混合显卡 PRIME（屏幕挂在核显上、游戏在 NVIDIA 上渲染）时，<strong>开机后第一个在独显上成功的 Vulkan 呈现如果来自 Steam/Proton 内部，就会坏掉</strong>：游戏黑屏但有声音。先跑一次 <code>vkcube</code> 让它在 Proton 之外呈现一次，之后整个会话正常，直到重启。</p>
 </div>
 <h2 id="_2">现象<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <ul>
-<li>启动游戏（本机：幻兽帕鲁式的 Proton 游戏、<code>pbz.exe</code>）→ 屏幕全黑，<strong>但游戏音乐/音效一直在响</strong>，键鼠也有反应（能切窗口、能退出）</li>
-<li>反复启动游戏，偶尔一次就出画面 —— <strong>只要成功一次，后面就不黑了</strong>，直到下次重登/重启</li>
-<li>前台切到别的窗口正常，说明不是整台机器没输出，只是<strong>游戏那张画面</strong>没到屏幕上</li>
+<li>从 Steam 启动 Proton 游戏 → 窗口在、屏幕全黑，<strong>但音乐音效一直在响</strong>，键鼠有反应（能切窗口、能退出）</li>
+<li><code>nvidia-smi</code> 显示游戏确实在独显上跑：占用高、显存吃 1–2 GB —— <strong>不是游戏没起来，是画面没上屏</strong></li>
+<li>反复启动游戏，偶尔一次就出画面；<strong>成功一次之后一直到重启都不再犯</strong></li>
+<li>同一个程序从 Steam 之外跑（<code>prime-run vkcube</code>、非 Steam 快捷方式）画面正常 —— 只有 Proton 那条路坏</li>
 </ul>
 <h2 id="_3">环境<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Arch Linux，niri 26.04（<code>niri-gpu-profile normal</code> 档：<code>ignore-drm-device</code> 忽略 4060，niri 用 Radeon 780M 合成）</li>
-<li>外接屏接在<strong>核显侧</strong>接口（<code>DP-2</code>，<code>amdgpu</code>），游戏仍用 <code>DRI_PRIME=1</code> 跑在 RTX 4060 上</li>
-<li>音频走 PipeWire（与显示路径无关，所以永远正常）</li>
+<li>Arch Linux，niri 26.04（本机 <code>niri-gpu-profile normal</code> 档：<code>ignore-drm-device</code> 忽略 4060，niri 用 Radeon 780M 合成）</li>
+<li>外接屏接在<strong>核显侧</strong>接口（<code>amdgpu</code>），游戏用 <code>DRI_PRIME=1</code> 跑在 RTX 4060 上</li>
+<li>音频走 PipeWire，与显示路径无关 —— 所以永远正常</li>
+<li>上游更普遍的形态：Intel 核显 + NVIDIA 独显、Hyprland/XWayland、Steam 64 位 <code>steamrt64</code> 客户端</li>
 </ul>
 <h2 id="_4">排查<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># 1) 谁在合成（normal 档应该是核显 = renderD128）</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>journalctl<span class="w"> </span>--user<span class="w"> </span>-b<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"using as the render node"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-1
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># 2) 有没有走跨卡 / 退回 CPU 拷贝</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>journalctl<span class="w"> </span>--user<span class="w"> </span>-b<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s2">"multigpu|cpu-copy|Failed to import"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># 3) 游戏是不是真在独显上（排除「游戏根本没起来」）</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>nvidia-smi<span class="w"> </span>pmon<span class="w"> </span>-c<span class="w"> </span><span class="m">1</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># 1) 先抓一次「失败的那次」的 Proton 日志，再动别的</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">PROTON_LOG</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">PROTON_LOG_DIR</span><span class="o">=</span>/tmp<span class="w"> </span>%command%
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">L</span><span class="o">=</span><span class="k">$(</span>ls<span class="w"> </span>-t<span class="w"> </span>/tmp/steam-*.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-1<span class="k">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># 2) 换链失败的签名</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>grep<span class="w"> </span>-ac<span class="w"> </span><span class="s2">"Failed to create swapchain, vr -13"</span><span class="w"> </span><span class="s2">"</span><span class="nv">$L</span><span class="s2">"</span><span class="w">      </span><span class="c1"># &gt;0 = 命中本条</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>grep<span class="w"> </span>-aE<span class="w"> </span><span class="s2">"Creating swapchain|Ensure maximum latency"</span><span class="w"> </span><span class="s2">"</span><span class="nv">$L</span><span class="s2">"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-3
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1">#    健康的一局：-13 计数为 0，且只有一条 Creating swapchain</span>
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># 4) 有没有 GPU hang / Xid</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s2">"nvidia|amdgpu"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s2">"xid|hang|reset"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># 3) 游戏是不是真在独显上（排除「根本没起来」）</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>nvidia-smi<span class="w"> </span>pmon<span class="w"> </span>-c<span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># 4) 有没有 GPU hang / Xid</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s2">"nvidia|amdgpu"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s2">"xid|hang|reset"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="c1"># 5) 另一种成因：Wine 的 Wayland 驱动枚举输出失败（解法相反，要关 Wayland）</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>grep<span class="w"> </span>-nE<span class="w"> </span><span class="s2">"Could not find output|wayland_output_array_zero|output_info_array_select"</span><span class="w"> </span><span class="s2">"</span><span class="nv">$L</span><span class="s2">"</span>
 </code></pre></div>
-<p>关键判据：<strong>能听到声音 + 2) 里出现 <code>Falling back to cpu-copy</code> 或 <code>Failed to import buffer</code> + 4) 干净</strong>，那就是本条，不是显卡挂了。</p>
+<p>判据：<strong>有声音 + 游戏在独显上跑 + 4) 干净</strong> → 本条。若 5) 命中，那是另一条路（去掉 <code>PROTON_ENABLE_WAYLAND</code>），别一次改两样。</p>
 <h2 id="_5">原因<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p>客户端在 4060 上渲染出来的 dma-buf，要交给 780M 合成、再由 780M 送屏，这是<strong>跨卡合成</strong>：</p>
+<p><code>vr -13</code> 就是 <code>VK_ERROR_UNKNOWN</code>，来自 <code>vkCreateSwapchainKHR</code>。整条链：</p>
+<ol>
+<li>开机后，独显一侧的呈现（present）路径还没被任何进程用过；</li>
+<li>Proton 游戏在 pressure-vessel 容器 + <code>steamrt64</code> 运行时里，于「PRIME 跨卡、屏幕由核显驱动」的拓扑上创建 swapchain，这条协商对不上 → 返回 <code>VK_ERROR_UNKNOWN</code>；</li>
+<li>vkd3d-proton <strong>每次 present 都重试 recreate</strong>，所以启动时失败一次就 latch 整个进程：几千次重试、永不恢复、窗口恒定黑 —— 画面没了，声音（另一条路）照常 → <strong>黑屏有声</strong>；</li>
+<li>重开游戏等于把这次"只做一次"的协商重掷一遍，所以偶尔能中；中过的那次是一次<strong>成功的呈现</strong>，从此驱动侧状态就是好的，一路好到重启。</li>
+</ol>
+<p><strong>证据等级（别混着讲）</strong></p>
 <ul>
-<li>NVIDIA 的 EGL 只肯输出 block-linear modifier，AMD 侧无法直接 import，smithay 会退回 <strong>CPU 拷贝</strong>（niri #4374 的用户日志实测：<code>Error importing dmabuf from renderD129 to renderD128</code> → <code>Falling back to cpu-copy</code>）</li>
-<li>这条跨卡路径<strong>第一次建立时可能导入失败 / 产出无效帧</strong>，于是游戏那一层的画面被丢弃，而音频走的是 PipeWire 的另一条路，完全不受影响 → <strong>黑屏有声</strong></li>
-<li>「成功一次后就一直正常」：成功那一次把跨卡 buffer 与 import 状态建立并缓存下来，之后沿用同一条已就绪的路径 —— <strong>这是对本机现象的机理解释，未在源码层面证实</strong>；能确定的是现象稳定可重复（本机多次实测）</li>
+<li><strong>实测</strong>：本机反复出现，<code>vkcube</code> 一次即治好（多例）；上游 #13876 里多人给出同一现象与同一做法</li>
+<li><strong>上游结论</strong>：Steam 64 位 <code>steamrt64</code> 运行时（build 1794424036，2026-11-12）之后，<strong>"开机后第一个在 NVIDIA 上渲染的东西必须来自 Proton/pressure-vessel 之外，之后 Steam 里的游戏就正常"</strong>（#13876 评论原话）；同帖还有 Battle.net 同症、同样被这招治好</li>
+<li><strong>未证实（不要当结论讲）</strong>：跨卡 dmabuf 的 modifier/格式协商具体卡在哪一环；也观察到过日志里 <code>-13</code> 计数为 <strong>0</strong> 的黑屏被同一招治好 —— 最终落点是"驱动/呈现状态"，不止一个错误码</li>
+<li><strong>别往这边找</strong>：跨卡合成导致的 CPU 拷贝（<code>Falling back to cpu-copy</code>）是<strong>性能</strong>问题，不是这条黑屏的原因。两者在同一台机器上都存在，最容易混为一谈</li>
 </ul>
 <h2 id="_6">解决办法<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
-<p><strong>① 当场救急（进游戏前跑一次）</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">DRI_PRIME</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>vkcube<span class="w"> </span>--c<span class="w"> </span><span class="m">5</span><span class="w">      </span><span class="c1"># 5 帧即可，本机实测 0.3 s，退出码 0</span>
+<p><strong>① 当场救急 / 开机跑一次（这是目前唯一的现成根治手段）</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>prime-run<span class="w"> </span>vkcube<span class="w"> </span>--c<span class="w"> </span><span class="m">5</span><span class="w">                   </span><span class="c1"># 本机实测：5 帧、0.3 s、exit 0</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>prime-run<span class="w"> </span>vkcube<span class="w"> </span>--wsi<span class="w"> </span>xcb<span class="w"> </span>--c<span class="w"> </span><span class="m">60</span><span class="w">        </span><span class="c1"># 上游那台用这条；哪个 WSI 都只是「让它呈现一次」</span>
 </code></pre></div>
-<p>它让 4060 通过 wayland 真正呈现一次（<code>Selected GPU 0: NVIDIA GeForce RTX 4060 Laptop GPU, type: DiscreteGpu</code>），把跨卡那条路「走通并记住」，之后进游戏就出画面。</p>
-<p><strong>② 自动化：放进登录自启，normal 档每次进 niri 自己跑</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>// ~/.config/niri/config.kdl
+<p><strong>它成功呈现一次，状态就好了</strong>。已经黑着的时候跑也有效，稳妥做法是跑完再启动游戏。</p>
+<p><strong>② 自动化：登录时跑一次</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>// ~/.config/niri/config.kdl —— 本机已按档位固化在脚本里
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>spawn-at-startup "/home/kirito/.local/bin/niri-gpu-profile" "resume"
 </code></pre></div>
-<p><code>resume</code> 里按档位分工：<code>game</code> → 重下 <code>-lgc</code> 锁频；<code>normal</code> → 跑一次 <code>DRI_PRIME=1 vkcube</code>。
-手动触发：<code>niri-gpu-profile refresh</code>（不用重登）；日志在 <code>~/.local/state/niri-gpu-profile/refresh.log</code>。</p>
-<p><strong>③ 根治：别跨卡</strong></p>
+<p><code>resume</code> 在 <code>normal</code> 档自动跑 <code>DRI_PRIME=1 vkcube</code>（<code>game</code> 档不跑，它本来就在独显上合成）。
+手动触发：<code>niri-gpu-profile refresh</code>；日志 <code>~/.local/state/niri-gpu-profile/refresh.log</code>。
+Hyprland 的等价写法：<code>exec-once = prime-run vkcube --wsi xcb --c 60</code>。</p>
+<p><strong>③ 不想每次跑：别跨卡</strong></p>
 <ul>
-<li>让 niri 整体用独显合成：<code>debug { render-drm-device "/dev/dri/renderD129" }</code>（代价：续航明显变差）</li>
-<li>或者 UEFI 里有 MUX 就切到独显直连</li>
-<li>上游的 per-output 合成（每块卡管自己那块屏）<strong>还没有</strong>：niri #3969 至今 open、无维护者答复</li>
+<li>让合成器整体用独显合成（<code>debug { render-drm-device ... }</code>）或切 MUX 直连 —— 代价是续航</li>
+<li>或者 <code>gamescope</code> 把游戏包一层独立合成器（多一次合成，几 % 成本）—— 是绕开，不是修复</li>
 </ul>
 <h2 id="_7">怎么确认<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># 跑完 vkcube 后应该看到 vkcube 短暂出现在独显上</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>nvidia-smi<span class="w"> </span>--query-gpu<span class="o">=</span>utilization.gpu<span class="w"> </span>--format<span class="o">=</span>csv,noheader
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># 然后启动游戏：有画面 = 生效；再把 vkcube 跑一次不会让黑屏回来</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># 跑完 vkcube 后启动游戏：有画面 = 生效</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># 想量化就看这一局日志的计数</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>grep<span class="w"> </span>-ac<span class="w"> </span><span class="s2">"Failed to create swapchain, vr -13"</span><span class="w"> </span>~/steam-&lt;appid&gt;.log<span class="w">   </span><span class="c1"># 期望 0</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>grep<span class="w"> </span>-ac<span class="w"> </span><span class="s2">"Creating swapchain"</span><span class="w"> </span>~/steam-&lt;appid&gt;.log<span class="w">                   </span><span class="c1"># 期望 1</span>
 </code></pre></div>
+<p>判据是「这一局的日志」，不是「这次能开」—— 重开本身就有概率中，光看能不能开不算证据。</p>
 <h2 id="_8">参考<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
 <ul>
-<li>niri #4374（跨卡 import 失败 → cpu-copy 日志）</li>
-<li>niri #4378（dGPU 合成时核显屏丢 blur，同一类跨卡限制）</li>
-<li>niri FAQ：外接屏接独显的混合显卡笔记本卡顿</li>
-<li>Xaver Hugl：Fixing Multi-GPU performance（2026-07）（dmabuf v5 只能广告一块 GPU，跨卡走系统内存）</li>
+<li>ValveSoftware/steam-for-linux <strong>#13876</strong>（open）：<code>steamrt64</code> 回归导致 NVIDIA+Intel 混合显卡下 <code>vr -13</code> / 游戏窗口不可见；评论区给出"第一个呈现必须来自 Proton 之外"的结论与 <code>prime-run vkcube</code> 做法</li>
+<li>HansKristian-Work/vkd3d-proton <strong>#3495</strong>（closed）：同类 <code>-13</code> 黑窗（混合显卡 + XWayland），那台的解法是 <code>PROTON_ENABLE_WAYLAND=1</code> —— 说明这现象不止一个成因，逐个试</li>
+<li>niri FAQ：外接屏接独显 / 内屏接核显时的跨卡合成与卡顿</li>
+<li>本项目实测无效、别再试的：<code>BufferCount</code> 2/4、ReShade/DLSS 注入、<code>VKD3D_DISABLE_EXTENSIONS</code>、<code>VKD3D_SWAPCHAIN_LATENCY_FRAMES=1</code>、换 vkd3d-proton 版本</li>
 </ul>
 
 
