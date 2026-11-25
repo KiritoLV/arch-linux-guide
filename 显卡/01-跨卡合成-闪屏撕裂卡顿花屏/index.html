@@ -859,8 +859,8 @@
 <p>它让 niri 每帧等渲染完成再交给 DRM，把隐式同步那个窗口抹平。支持热重载，不用退游戏：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>niri<span class="w"> </span>validate<span class="w"> </span>-c<span class="w"> </span>~/.config/niri/config.kdl<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>niri<span class="w"> </span>msg<span class="w"> </span>action<span class="w"> </span>load-config-file
 </code></pre></div>
-<p><strong>只在跨卡的场合开</strong>：niri 和客户端不在同一块卡上时才有意义（本机 <code>game</code> 档：niri 用 4060、Chrome 用核显），同卡档位加了是纯多余。</p>
-<p>代价实测不出来：同一场景开/关各跑几百秒，72.3 fps vs 69.3 fps、p99 20.44 ms vs 21.65 ms，属于场景噪声。</p>
+<p><strong>同卡也建议开着</strong>。本来以为只有跨卡才有用，本机 <code>game</code> 档里 niri 和游戏都在 4060，算同卡，实测关掉之后平均帧一点没掉（77.7 vs 78.0），但 &gt;33 ms 的卡顿从 0.8 次/分涨到 3.2 次/分。数字见 <a href="../../niri%E7%8E%A9%E6%B8%B8%E6%88%8F/01-%E4%B8%89%E6%A1%A3%E5%AF%B9%E6%AF%94/">niri 玩游戏 · 三档对比</a>。</p>
+<p>代价是测不出来的：同一场景开/关各跑几百秒，game 档 72.3 vs 69.3 fps、normal 档 72.9 vs 71.8 fps，p99 也都在噪声内 —— 它不动平均帧，收益全在尾部。上游 <a href="https://github.com/niri-wm/niri/issues/4091">niri #4091</a> 也是这个结论：加上它帧率没有任何变化。</p>
 <p>顺手把 VRR 规则也修对，否则画面节奏还是会死锁在固定刷新率：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>window-rule {
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    match app-id=r#"^.*\.exe$"#

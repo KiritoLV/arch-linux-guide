@@ -580,7 +580,29 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#game-wff-ab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        补充：game 档里把 wff 关掉的 A/B
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        别人测过吗
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         自己复现
@@ -837,7 +859,29 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#game-wff-ab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        补充：game 档里把 wff 关掉的 A/B
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        别人测过吗
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         自己复现
@@ -958,7 +1002,67 @@
 </code></pre></div>
 <p><strong>最差的是不开 wff 的 <code>normal</code> 档</strong>：平均帧最低（71.8），卡顿还是 <code>game</code> 档的近 9 倍（7.0 次/分）。这一档的手感是"打着打着偶尔一顿"，而这一顿跟显存带宽、跟降频都没关系 —— 跨卡那局核心时钟反而比 <code>game</code> 档还高（2460 vs 2388 MHz）。</p>
 <p><strong><code>wff</code> 治不了那 6.5%。</strong> 它削的是同步抖动的尾部，跨卡合成多出来的那次拷贝和呈现是固定成本。想要那 6.5%，只能切 <code>game</code> 档（代价是锁频、显存多占 0.5 GB）。</p>
-<h2 id="_3">自己复现<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h2 id="game-wff-ab">补充：<code>game</code> 档里把 wff 关掉的 A/B<a class="headerlink" href="#game-wff-ab" title="Permanent link">&para;</a></h2>
+<p>既然 <code>game</code> 档里游戏和 niri 都在 4060（同卡），前面那行 wff 看起来是白等一帧。实测关掉一局同场景：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th><code>game</code> 开 wff</th>
+<th><code>game</code> 关 wff</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>中位 fps</td>
+<td>78.0</td>
+<td><strong>77.7</strong></td>
+</tr>
+<tr>
+<td>1% low</td>
+<td>53.7</td>
+<td><strong>54.0</strong></td>
+</tr>
+<tr>
+<td>0.1% low</td>
+<td>43.4</td>
+<td>39.4</td>
+</tr>
+<tr>
+<td>帧时间 p99</td>
+<td>18.62 ms</td>
+<td><strong>18.52 ms</strong></td>
+</tr>
+<tr>
+<td>p99.9</td>
+<td>23.05 ms</td>
+<td>25.40 ms</td>
+</tr>
+<tr>
+<td>&gt;33ms 卡顿</td>
+<td><strong>0.8 次/分</strong></td>
+<td><strong>3.2 次/分</strong></td>
+</tr>
+<tr>
+<td>&gt;50ms 卡顿</td>
+<td><strong>0.6 次/分</strong></td>
+<td><strong>2.4 次/分</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>平均帧和 p99 一点没差，卡顿次数翻了 4 倍。</strong> 所以"同卡就不用开"这个推论是错的，两档都留着。</p>
+<p>关掉之后为什么尾部会变差，我还没实测出机制，只能给推断：niri 合成的帧不等 GPU 渲染完成就提交，和游戏自己在 4060 队列里的帧抢同一个 vblank；另外 Chrome 在核显上渲染的帧仍然走跨卡这条路径。想验证得抓 fence 时间线，暂时没做。</p>
+<h2 id="_3">别人测过吗<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>搜了一圈，<strong>没有找到任何人给过"开/关 wff"的量化对比</strong> —— 网上能搜到的全是"加了就不闪了"和"加了帧率没变"这两种定性描述：</p>
+<ul>
+<li><a href="https://github.com/niri-wm/niri/issues/4091">niri #4091</a>：NVIDIA 上 Wayland 模式打游戏比 Xwayland 低约 25%（Path of Exile 2），作者试过 <code>wait-for-frame-completion-before-queueing</code> 和 <code>emulate-zero-presentation-time</code>，帧率毫无变化。这跟我们上面"平均帧不变"的实测一致。</li>
+<li><a href="https://github.com/niri-wm/niri/issues/2477">niri #2477</a>：画面撕裂/闪烁，加上这个选项就好了（也是它最常见的用途）。</li>
+<li><a href="https://github.com/niri-wm/niri/issues/3774">niri #3774</a>：外接 DP 屏切工作区时微顿，跟 wff 无关。</li>
+<li><a href="https://github.com/niri-wm/niri/issues/4615">niri #4615</a>：缩放系数不能整除分辨率时 direct scanout 失效，带来帧节奏问题。</li>
+<li><a href="https://www.reddit.com/r/niri/comments/1shjb2z/rtx_5080_5800x3d_wayland_benchmarks_kde_vs/">r/niri 的一篇 RTX 5080 对比</a>：KDE / Hyprland / niri 三方对比，niri 的 1% low 明显差一截，跟 #4091 是同一件事。</li>
+<li>官方 wiki 一直把它列在 Debug Options，写着"这些选项带已知问题，不是日常设置"，选项说明本身也只说 useful for <strong>diagnosing</strong>。真正的根治得等 niri 上 <code>linux-drm-syncobj-v1</code> 显式同步。</li>
+</ul>
+<h2 id="_4">自己复现<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <p>三档分别是 <code>niri-gpu-profile game</code>、<code>niri-gpu-profile normal</code>（脚本里带上/去掉 <code>wait-for-frame-completion-before-queueing</code>），换档后重新登录，<code>mangoHud</code> 里打开 logging 跑同场景即可。判读只看三个数：中位 fps、稳态 &gt;33ms 次数/分、0.1% low。</p>
 
 
