@@ -27,7 +27,7 @@
     
     
       
-        <title>每隔几秒卡一下，显卡占用明明很高 - 我的 Arch Linux 问题记录</title>
+        <title>每隔几秒卡一下 - 我的 Arch Linux 问题记录</title>
       
     
     
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              每隔几秒卡一下，显卡占用明明很高
+              每隔几秒卡一下
             
           </span>
         </div>
@@ -395,7 +395,7 @@
   <span class="md-ellipsis">
     
   
-    每隔几秒卡一下，显卡占用明明很高
+    每隔几秒卡一下
   
 
     
@@ -413,7 +413,7 @@
   <span class="md-ellipsis">
     
   
-    每隔几秒卡一下，显卡占用明明很高
+    每隔几秒卡一下
   
 
     
@@ -754,18 +754,14 @@
   
 
 
-<h1 id="_1">每隔几秒卡一下，显卡占用明明很高<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<p>没有报错、没有花屏，就是安静地每隔几秒卡那么一下：滑动工作区先卡一下、然后很顺、几秒后又卡一下；看视频或者带过渡动画的界面偶尔整段掉帧。mangohud 之类的占用显示很高，看着像"显卡明明在干活"。</p>
+<h1 id="_1">每隔几秒卡一下<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>没有报错、没有花屏，就是安静地每隔几秒卡那么一下：滑动工作区先卡一下、然后很顺、几秒后又卡一下；看视频或者带过渡动画的界面偶尔整段掉帧。</p>
 <h2 id="_2">问题描述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>显卡空闲几秒后会掉进深睡档（P8，核心 300 MHz 上下、显存 405 MHz）。高刷桌面每秒要合成 170 帧，从深睡爬回来要几十毫秒，这几十毫秒就是看到的那一顿。它只在"刚要用显卡"的瞬间发生，所以表现为偶发、静默、没有任何日志。</p>
-<p>判据看 <strong>P-state 和显存频率</strong>，不看核心频率 —— P0 和 P4 的核心都可能跑在 2250 MHz 上下，真正差的是显存档：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>timeout<span class="w"> </span><span class="m">16</span><span class="w"> </span>nvidia-smi<span class="w"> </span>--query-gpu<span class="o">=</span>clocks.current.graphics,clocks.current.memory,utilization.gpu,pstate<span class="w"> </span>-lms<span class="w"> </span><span class="m">100</span><span class="w"> </span>--format<span class="o">=</span>csv
-</code></pre></div>
-<p>命中特征：占用已经 90%，核心和显存却还在低档（例如显存 405 MHz、P8）。</p>
 <h2 id="_3">解决办法<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <p>给一个频率地板，把深睡档挡掉：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>nvidia-smi<span class="w"> </span>-pm<span class="w"> </span><span class="m">1</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>sudo<span class="w"> </span>nvidia-smi<span class="w"> </span>-lgc<span class="w"> </span><span class="m">840</span>,3105
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>nvidia-smi<span class="w"> </span>-pm<span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo<span class="w"> </span>nvidia-smi<span class="w"> </span>-lgc<span class="w"> </span><span class="m">840</span>,3105
 </code></pre></div>
 <p>格式是 <code>min,max</code>，上界保持默认（VBIOS 的理论上限），只抬下限。本机地板 840 已经完全看不出掉帧：稳定在 P5 / 840 MHz / 显存 810 MHz / 约 10 W，<strong>不用额外钉显存</strong>（<code>-lmc</code>）。高刷下还偶发就抬到 1000。</p>
 <p>代价是待机功耗会高一点，但实测下来不明显。</p>
