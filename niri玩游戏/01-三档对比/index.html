@@ -580,10 +580,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#game-wff-ab" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        补充：game 档里把 wff 关掉的 A/B
+        一个必须排除的坑：换档后第一局不能算
       
     </span>
   </a>
@@ -591,7 +591,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         别人测过吗
@@ -602,7 +602,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         自己复现
@@ -859,10 +859,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#game-wff-ab" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        补充：game 档里把 wff 关掉的 A/B
+        一个必须排除的坑：换档后第一局不能算
       
     </span>
   </a>
@@ -870,7 +870,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         别人测过吗
@@ -881,7 +881,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         自己复现
@@ -993,66 +993,71 @@
 </tbody>
 </table>
 <p>三局 GPU 占用都顶在 95% 以上，4060 才是瓶颈，所以下面这些差别都出在"画面怎么送到屏幕上"这一步。</p>
+<p>⚠️ 这张表里 A 那列是换档后第一局、C 是同一档位的第二局，<strong>两列的卡顿次数不能直接比</strong>（A 虚高，原因见 <a href="#一个必须排除的坑换档后第一局不能算">下面那节</a>）。平均帧不受这个影响。</p>
 <h2 id="_2">怎么选<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p><strong>打游戏就切 <code>game</code> 档</strong>，平均帧这一个指标它是第一（78 fps），卡顿也干净。</p>
-<p><strong>但要留在 <code>normal</code> 档，就必须开 <code>wait-for-frame-completion-before-queueing</code></strong>。开了之后卡顿次数（0.5 次/分）比 <code>game</code> 档（0.8 次/分）还少，0.1% low 和 p99 完全打平，平均帧只差 6.5%：</p>
+<p><strong>打游戏就切 <code>game</code> 档</strong>：平均帧这一项它是第一（78 fps 上下），跨卡合成那百分之几的损失在它身上不存在。</p>
+<p><strong>想留在 <code>normal</code> 档，就把 <code>wait-for-frame-completion-before-queueing</code> 打开</strong>：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>debug {
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  wait-for-frame-completion-before-queueing
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>}
 </code></pre></div>
-<p><strong>最差的是不开 wff 的 <code>normal</code> 档</strong>：平均帧最低（71.8），卡顿还是 <code>game</code> 档的近 9 倍（7.0 次/分）。这一档的手感是"打着打着偶尔一顿"，而这一顿跟显存带宽、跟降频都没关系 —— 跨卡那局核心时钟反而比 <code>game</code> 档还高（2460 vs 2388 MHz）。</p>
-<p><strong><code>wff</code> 治不了那 6.5%。</strong> 它削的是同步抖动的尾部，跨卡合成多出来的那次拷贝和呈现是固定成本。想要那 6.5%，只能切 <code>game</code> 档（代价是锁频、显存多占 0.5 GB）。</p>
-<h2 id="game-wff-ab">补充：<code>game</code> 档里把 wff 关掉的 A/B<a class="headerlink" href="#game-wff-ab" title="Permanent link">&para;</a></h2>
-<p>既然 <code>game</code> 档里游戏和 niri 都在 4060（同卡），前面那行 wff 看起来是白等一帧。实测关掉一局同场景：</p>
+<p>平均帧它救不回来 —— 跨卡合成多出来的那次拷贝和呈现是固定成本，78.0 对 72.9 这个差距只能靠换档。开它买的是画面：不靠它压着，跨卡的闪、撕、拖影就会回来。</p>
+<p><strong>它到底值多少卡顿，我这台机器上测不出稳定差异</strong>，原因见下一节 —— 判尾部得同一档位跑两局取第二局，我目前没有这样干净的数据对。</p>
+<h2 id="_3">一个必须排除的坑：换档后第一局不能算<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>每换一次档位（<code>normal</code> ↔ <code>game</code>，重登录也算），游戏进去以后要重新加载一遍自己的资源，头一两局会有一簇几十到几百毫秒的卡顿，跟 wff 开不开没有关系。同一场景连着录几局，这一点非常明显：</p>
 <table>
 <thead>
 <tr>
-<th>指标</th>
-<th><code>game</code> 开 wff</th>
-<th><code>game</code> 关 wff</th>
+<th>录制开始</th>
+<th>换档后第几局</th>
+<th>稳态 &gt;33ms 卡顿</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>中位 fps</td>
-<td>78.0</td>
-<td><strong>77.7</strong></td>
+<td>11:32</td>
+<td><code>game</code> 第 1 局</td>
+<td><strong>5.4 次/分</strong></td>
 </tr>
 <tr>
-<td>1% low</td>
-<td>53.7</td>
-<td><strong>54.0</strong></td>
+<td>11:38</td>
+<td><code>game</code> 第 2 局</td>
+<td>0.8 次/分</td>
 </tr>
 <tr>
-<td>0.1% low</td>
-<td>43.4</td>
-<td>39.4</td>
+<td>12:41</td>
+<td><code>normal</code> 第 1 局</td>
+<td><strong>7.0 次/分</strong></td>
 </tr>
 <tr>
-<td>帧时间 p99</td>
-<td>18.62 ms</td>
-<td><strong>18.52 ms</strong></td>
+<td>12:58</td>
+<td><code>normal</code> 第 2 局</td>
+<td>0.5 次/分</td>
 </tr>
 <tr>
-<td>p99.9</td>
-<td>23.05 ms</td>
-<td>25.40 ms</td>
+<td>13:40</td>
+<td><code>game</code> 第 3 局</td>
+<td>3.2 次/分</td>
 </tr>
 <tr>
-<td>&gt;33ms 卡顿</td>
-<td><strong>0.8 次/分</strong></td>
-<td><strong>3.2 次/分</strong></td>
-</tr>
-<tr>
-<td>&gt;50ms 卡顿</td>
-<td><strong>0.6 次/分</strong></td>
-<td><strong>2.4 次/分</strong></td>
+<td>14:06</td>
+<td><code>game</code> 第 4 局</td>
+<td>0.6 次/分</td>
 </tr>
 </tbody>
 </table>
-<p><strong>平均帧和 p99 一点没差，卡顿次数翻了 4 倍。</strong> 所以"同卡就不用开"这个推论是错的，两档都留着。</p>
-<p>关掉之后为什么尾部会变差，我还没实测出机制，只能给推断：niri 合成的帧不等 GPU 渲染完成就提交，和游戏自己在 4060 队列里的帧抢同一个 vblank；另外 Chrome 在核显上渲染的帧仍然走跨卡这条路径。想验证得抓 fence 时间线，暂时没做。</p>
-<h2 id="_3">别人测过吗<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>第一局比后面高 6～14 倍，跑熟了才落到 0.6 上下。于是：</p>
+<ul>
+<li><strong>比平均帧</strong>：第一局也能用，fps 基本不受影响；</li>
+<li><strong>比卡顿次数</strong>：只能拿同一档位下第二局及以后来比，否则量到的是资源加载，不是显卡路径。</li>
+</ul>
+<p>这条规矩当场推翻了我自己的一次 A/B：那次在 <code>game</code> 档关掉 wff 录了一局，得到"<code>&gt;33ms</code> 从 0.8 涨到 3.2 次/分"，看着像 4 倍收益 —— 实际上那局 25 个卡顿里有 12 个挤在 60～130 秒，正是资源加载那一段。补录一局（同样关掉 wff）是 0.6 次/分，跟开着 wff 的 0.8 一个水平。</p>
+<p><strong>所以现在的结论是：</strong></p>
+<ul>
+<li><code>game</code> 档开不开 wff，平均帧和帧时间尾部都测不出差异（开 78.0 fps / 0.8 次每分，关 77.7～78.3 fps / 0.6 次每分）；</li>
+<li><code>normal</code> 档那个"7.0 → 0.5"同样被资源加载污染了，wff 在跨卡合成里到底救回多少卡顿，得按上面的规矩复测才算数，我手上还没有干净的数据对。</li>
+</ul>
+<h2 id="_4">别人测过吗<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <p>搜了一圈，<strong>没有找到任何人给过"开/关 wff"的量化对比</strong> —— 网上能搜到的全是"加了就不闪了"和"加了帧率没变"这两种定性描述：</p>
 <ul>
 <li><a href="https://github.com/niri-wm/niri/issues/4091">niri #4091</a>：NVIDIA 上 Wayland 模式打游戏比 Xwayland 低约 25%（Path of Exile 2），作者试过 <code>wait-for-frame-completion-before-queueing</code> 和 <code>emulate-zero-presentation-time</code>，帧率毫无变化。这跟我们上面"平均帧不变"的实测一致。</li>
@@ -1062,7 +1067,7 @@
 <li><a href="https://www.reddit.com/r/niri/comments/1shjb2z/rtx_5080_5800x3d_wayland_benchmarks_kde_vs/">r/niri 的一篇 RTX 5080 对比</a>：KDE / Hyprland / niri 三方对比，niri 的 1% low 明显差一截，跟 #4091 是同一件事。</li>
 <li>官方 wiki 一直把它列在 Debug Options，写着"这些选项带已知问题，不是日常设置"，选项说明本身也只说 useful for <strong>diagnosing</strong>。真正的根治得等 niri 上 <code>linux-drm-syncobj-v1</code> 显式同步。</li>
 </ul>
-<h2 id="_4">自己复现<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h2 id="_5">自己复现<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
 <p>三档分别是 <code>niri-gpu-profile game</code>、<code>niri-gpu-profile normal</code>（脚本里带上/去掉 <code>wait-for-frame-completion-before-queueing</code>），换档后重新登录，<code>mangoHud</code> 里打开 logging 跑同场景即可。判读只看三个数：中位 fps、稳态 &gt;33ms 次数/分、0.1% low。</p>
 
 
