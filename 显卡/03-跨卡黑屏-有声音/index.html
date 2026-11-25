@@ -899,7 +899,7 @@
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># 4) 有没有 GPU hang / Xid</span>
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s2">"nvidia|amdgpu"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s2">"xid|hang|reset"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail
 <a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="c1"># 5) 另一种成因：Wine 的 Wayland 驱动枚举输出失败（解法相反，要关 Wayland）</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="c1"># 5) 其他成因（本机长期 PROTON_ENABLE_WAYLAND=1，这两条基本可跳过，留个判据）</span>
 <a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>grep<span class="w"> </span>-nE<span class="w"> </span><span class="s2">"Could not find output|wayland_output_array_zero|output_info_array_select"</span><span class="w"> </span><span class="s2">"</span><span class="nv">$L</span><span class="s2">"</span>
 </code></pre></div>
 <p>判据：<strong>有声音 + 游戏在独显上跑 + 4) 干净</strong> → 本条。若 5) 命中，那是另一条路（去掉 <code>PROTON_ENABLE_WAYLAND</code>），别一次改两样。</p>
@@ -916,7 +916,8 @@
 <li><strong>实测</strong>：本机反复出现，<code>vkcube</code> 一次即治好（多例）；上游 #13876 里多人给出同一现象与同一做法</li>
 <li><strong>上游结论</strong>：Steam 64 位 <code>steamrt64</code> 运行时（build 1794424036，2026-11-12）之后，<strong>"开机后第一个在 NVIDIA 上渲染的东西必须来自 Proton/pressure-vessel 之外，之后 Steam 里的游戏就正常"</strong>（#13876 评论原话）；同帖还有 Battle.net 同症、同样被这招治好</li>
 <li><strong>未证实（不要当结论讲）</strong>：跨卡 dmabuf 的 modifier/格式协商具体卡在哪一环；也观察到过日志里 <code>-13</code> 计数为 <strong>0</strong> 的黑屏被同一招治好 —— 最终落点是"驱动/呈现状态"，不止一个错误码</li>
-<li><strong>别往这边找</strong>：跨卡合成导致的 CPU 拷贝（<code>Falling back to cpu-copy</code>）是<strong>性能</strong>问题，不是这条黑屏的原因。两者在同一台机器上都存在，最容易混为一谈</li>
+<li><strong>排除项（实测）</strong>：本机 Proton 游戏长期带 <code>PROTON_ENABLE_WAYLAND=1</code>，所以「XWayland 换链失败」那条成因不成立 —— 不是推测，是配置一直在那儿</li>
+<li><strong>别往这边找</strong>：跨卡合成导致的 CPU 拷贝（<code>Falling back to cpu-copy</code>）是<strong>性能</strong>问题，跟这条黑屏不是一回事。同一台机器上两件事都会发生，最容易被串成因果（这条第一版就串错过）</li>
 </ul>
 <h2 id="_6">解决办法<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
 <p><strong>① 当场救急 / 开机跑一次（这是目前唯一的现成根治手段）</strong></p>
@@ -946,7 +947,7 @@ Hyprland 的等价写法：<code>exec-once = prime-run vkcube --wsi xcb --c 60</
 <h2 id="_8">参考<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
 <ul>
 <li>ValveSoftware/steam-for-linux <strong>#13876</strong>（open）：<code>steamrt64</code> 回归导致 NVIDIA+Intel 混合显卡下 <code>vr -13</code> / 游戏窗口不可见；评论区给出"第一个呈现必须来自 Proton 之外"的结论与 <code>prime-run vkcube</code> 做法</li>
-<li>HansKristian-Work/vkd3d-proton <strong>#3495</strong>（closed）：同类 <code>-13</code> 黑窗（混合显卡 + XWayland），那台的解法是 <code>PROTON_ENABLE_WAYLAND=1</code> —— 说明这现象不止一个成因，逐个试</li>
+<li><strong>已排除、别往这边找</strong>：XWayland 路径上缺 <code>PROTON_ENABLE_WAYLAND=1</code> 造成的同类 <code>vr -13</code> —— 本机所有 Proton 游戏<strong>一直</strong>挂着 <code>PROTON_ENABLE_WAYLAND=1</code>，这条路不适用</li>
 <li>niri FAQ：外接屏接独显 / 内屏接核显时的跨卡合成与卡顿</li>
 <li>本项目实测无效、别再试的：<code>BufferCount</code> 2/4、ReShade/DLSS 注入、<code>VKD3D_DISABLE_EXTENSIONS</code>、<code>VKD3D_SWAPCHAIN_LATENCY_FRAMES=1</code>、换 vkd3d-proton 版本</li>
 </ul>
