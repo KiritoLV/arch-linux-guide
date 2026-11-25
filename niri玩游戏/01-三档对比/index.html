@@ -993,16 +993,16 @@
 </tbody>
 </table>
 <p>三局 GPU 占用都顶在 95% 以上，4060 才是瓶颈，所以下面这些差别都出在"画面怎么送到屏幕上"这一步。</p>
-<p>⚠️ 这张表里 A 那列是换档后第一局、C 是同一档位的第二局，<strong>两列的卡顿次数不能直接比</strong>（A 虚高，原因见 <a href="#一个必须排除的坑换档后第一局不能算">下面那节</a>）。平均帧不受这个影响。</p>
+<p>⚠️ 这张表里 A 那列是换档后第一局、C 是同一档位的第二局，<strong>两列的卡顿次数不能直接比</strong>（A 虚高，原因见 <a href="#一个必须排除的坑换档后第一局不能算">下面那节</a>）。平均帧不受这个影响 —— C 列摆在这里正好说明：加上 wff 之后平均帧只从 71.8 变成 72.9，跨卡那 6～8% 一分没少。</p>
 <h2 id="_2">怎么选<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p><strong>打游戏就切 <code>game</code> 档</strong>：平均帧这一项它是第一（78 fps 上下），跨卡合成那百分之几的损失在它身上不存在。</p>
-<p><strong>想留在 <code>normal</code> 档，就把 <code>wait-for-frame-completion-before-queueing</code> 打开</strong>：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>debug {
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  wait-for-frame-completion-before-queueing
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>}
-</code></pre></div>
-<p>平均帧它救不回来 —— 跨卡合成多出来的那次拷贝和呈现是固定成本，78.0 对 72.9 这个差距只能靠换档。开它买的是画面：不靠它压着，跨卡的闪、撕、拖影就会回来。</p>
-<p><strong>它到底值多少卡顿，我这台机器上测不出稳定差异</strong>，原因见下一节 —— 判尾部得同一档位跑两局取第二局，我目前没有这样干净的数据对。</p>
+<p><strong><code>wait-for-frame-completion-before-queueing</code> 跟玩游戏没关系，别指望它提帧或者减卡顿。</strong></p>
+<ul>
+<li>帧率：开了关了一个样（78.0 对 77.7～78.3 fps，p99 都在噪声内）</li>
+<li>卡顿：也测不出稳定差异（开 0.8 次/分，关 0.6～3.2 次/分，波动比差异还大）</li>
+<li>它真正治的是 <strong>NVIDIA 侧跨卡的撕裂</strong>：本机就是 <code>game</code> 档里 Chrome 在核显渲染、niri 在 4060 合成那一路。纯 AMD 核显合成的 <code>normal</code> 档没这个毛病，<strong>不用开</strong></li>
+</ul>
+<p>跨卡合成那 6～8% 的帧率损失也不是它能救的 —— 多出来的那次拷贝和呈现是固定成本，78.0 对 72.9 这个差距只能靠换档。</p>
 <h2 id="_3">一个必须排除的坑：换档后第一局不能算<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <p>每换一次档位（<code>normal</code> ↔ <code>game</code>，重登录也算），游戏进去以后要重新加载一遍自己的资源，头一两局会有一簇几十到几百毫秒的卡顿，跟 wff 开不开没有关系。同一场景连着录几局，这一点非常明显：</p>
 <table>
@@ -1055,7 +1055,8 @@
 <p><strong>所以现在的结论是：</strong></p>
 <ul>
 <li><code>game</code> 档开不开 wff，平均帧和帧时间尾部都测不出差异（开 78.0 fps / 0.8 次每分，关 77.7～78.3 fps / 0.6 次每分）；</li>
-<li><code>normal</code> 档那个"7.0 → 0.5"同样被资源加载污染了，wff 在跨卡合成里到底救回多少卡顿，得按上面的规矩复测才算数，我手上还没有干净的数据对。</li>
+<li><code>normal</code> 档那个"7.0 → 0.5"同样被资源加载污染了，不能算 wff 的功劳；</li>
+<li>所以 wff 不用当性能开关用 —— 它的位置是治 NVIDIA 跨卡撕裂（<code>game</code> 档的 Chrome），纯 AMD 核显合成的 <code>normal</code> 档不用开。</li>
 </ul>
 <h2 id="_4">别人测过吗<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <p>搜了一圈，<strong>没有找到任何人给过"开/关 wff"的量化对比</strong> —— 网上能搜到的全是"加了就不闪了"和"加了帧率没变"这两种定性描述：</p>

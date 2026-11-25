@@ -859,7 +859,7 @@
 <p>它让 niri 每帧等渲染完成再交给 DRM，把隐式同步那个窗口抹平。支持热重载，不用退游戏：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>niri<span class="w"> </span>validate<span class="w"> </span>-c<span class="w"> </span>~/.config/niri/config.kdl<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>niri<span class="w"> </span>msg<span class="w"> </span>action<span class="w"> </span>load-config-file
 </code></pre></div>
-<p><strong>同卡就别指望它了</strong>：本机 <code>game</code> 档里 niri 和游戏都在 4060，算同卡，开/关各录一局，平均帧和卡顿都测不出差异（78.0 vs 77.7 fps）。它的位置还是跨卡那一边（本机 <code>game</code> 档的 Chrome 用核显、niri 用 4060）。</p>
+<p><strong>它治的是 NVIDIA 侧跨卡，不是性能。</strong> 本机 <code>game</code> 档里 niri 和游戏都在 4060，开/关各录一局，平均帧和卡顿都测不出差异（78.0 vs 77.7 fps）；真正需要它的是同一档里 Chrome 在核显渲染、niri 在 4060 合成那一路。纯 AMD 核显合成的 <code>normal</code> 档没有这个毛病，不用开。</p>
 <p>代价是测不出来的：同一场景开/关各跑几百秒，<code>game</code> 档 72.3 vs 69.3 fps、<code>normal</code> 档 72.9 vs 71.8 fps，p99 也都在噪声内 —— 它不动平均帧。上游 <a href="https://github.com/niri-wm/niri/issues/4091">niri #4091</a> 也是这个结论：加上它帧率没有任何变化。</p>
 <p>⚠️ 拿它测卡顿次数要小心：换一次档位，游戏第一局先去重载自己的资源，卡顿数会虚高 6～14 倍，跟开没开这个选项无关。判读规矩见 <a href="../../niri%E7%8E%A9%E6%B8%B8%E6%88%8F/01-%E4%B8%89%E6%A1%A3%E5%AF%B9%E6%AF%94/">niri 玩游戏 · 三档对比</a>。</p>
 <p>顺手把 VRR 规则也修对，否则画面节奏还是会死锁在固定刷新率：</p>
