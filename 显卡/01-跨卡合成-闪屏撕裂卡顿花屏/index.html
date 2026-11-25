@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="混合显卡 + niri 的排错笔记：跨卡合成、频率过低、Chrome 硬解">
+        <meta name="description" content="混合显卡 + niri 上实际踩过的问题：画面闪烁撕裂、掉帧、游戏黑屏有声、Chrome 硬解、NTFS 读错">
       
       
         <meta name="author" content="KiritoLV">
@@ -27,7 +27,7 @@
     
     
       
-        <title>第一类：跨卡合成 —— 闪屏 / 撕裂 / 残影 / 单帧花屏 - Arch 排错笔记</title>
+        <title>画面闪、撕、拖影，高刷下偶尔单帧花屏 - 我的 Arch Linux 问题记录</title>
       
     
     
@@ -94,7 +94,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="../.." title="Arch 排错笔记" class="md-header__button md-logo" aria-label="Arch 排错笔记" data-md-component="logo">
+    <a href="../.." title="我的 Arch Linux 问题记录" class="md-header__button md-logo" aria-label="我的 Arch Linux 问题记录" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,13 +108,13 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Arch 排错笔记
+            我的 Arch Linux 问题记录
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              第一类：跨卡合成 —— 闪屏 / 撕裂 / 残影 / 单帧花屏
+              画面闪、撕、拖影，高刷下偶尔单帧花屏
             
           </span>
         </div>
@@ -232,13 +232,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Arch 排错笔记" class="md-nav__button md-logo" aria-label="Arch 排错笔记" data-md-component="logo">
+    <a href="../.." title="我的 Arch Linux 问题记录" class="md-nav__button md-logo" aria-label="我的 Arch Linux 问题记录" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Arch 排错笔记
+    我的 Arch Linux 问题记录
   </label>
   
     <div class="md-nav__source">
@@ -367,7 +367,7 @@
   <span class="md-ellipsis">
     
   
-    第一类：跨卡合成 —— 闪屏 / 撕裂 / 残影 / 单帧花屏
+    画面闪、撕、拖影，高刷下偶尔单帧花屏
   
 
     
@@ -385,7 +385,7 @@
   <span class="md-ellipsis">
     
   
-    第一类：跨卡合成 —— 闪屏 / 撕裂 / 残影 / 单帧花屏
+    画面闪、撕、拖影，高刷下偶尔单帧花屏
   
 
     
@@ -414,7 +414,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        现象
+        问题描述
       
     </span>
   </a>
@@ -425,62 +425,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        环境
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        排查
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        原因
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
         解决办法
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        怎么确认好了
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        参考
       
     </span>
   </a>
@@ -510,7 +455,7 @@
   <span class="md-ellipsis">
     
   
-    第二类：静默偶发卡顿 —— 频率太低（锁频解决）
+    每隔几秒卡一下，显卡占用明明很高
   
 
     
@@ -538,7 +483,7 @@
   <span class="md-ellipsis">
     
   
-    第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立
+    游戏黑屏但有声音
   
 
     
@@ -629,7 +574,7 @@
   <span class="md-ellipsis">
     
   
-    Chrome 在 NVIDIA 上根本不会硬解：独显直连就换 Firefox，有核显才指定核显
+    Chrome 在 NVIDIA 上根本不做硬解
   
 
     
@@ -720,7 +665,7 @@
   <span class="md-ellipsis">
     
   
-    NTFS 大文件读到一半 EIO、目录读到某个 inode 就中断
+    NTFS 大文件读到一半报 I/O 错误
   
 
     
@@ -771,7 +716,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        现象
+        问题描述
       
     </span>
   </a>
@@ -782,62 +727,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        环境
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        排查
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        原因
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
         解决办法
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        怎么确认好了
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        参考
       
     </span>
   </a>
@@ -864,83 +754,29 @@
   
 
 
-<h1 id="_1">第一类：跨卡合成 —— 闪屏 / 撕裂 / 残影 / 单帧花屏<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<div class="admonition info">
-<p class="admonition-title">一句话</p>
-<p>niri 在一块卡上扫描输出、客户端在另一块卡上渲染，中间没有显式同步，问题全从这来。</p>
-</div>
-<h2 id="_2">现象<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>外接屏物理接在独显上（本机 DP-9 接 4060），但客户端跑在核显上（例如 Chrome 指定了 780M 硬解），
-于是出现其中任意一种：</p>
-<ul>
-<li>闪屏 / 撕裂纹（画面上下错位一条）</li>
-<li>弹幕、滚动内容有<strong>残影感</strong>，晃一下鼠标反而顺</li>
-<li>高刷下任意窗口偶发<strong>单帧花屏</strong></li>
-<li>VRR 明明配了却不生效，画面节奏仍然死锁在固定刷新率</li>
-</ul>
-<p>共同点：<strong>不是算力不够</strong>，GPU 占用往往没满，但画面就是不安分。</p>
-<h2 id="_3">环境<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<p>niri + 混合显卡（RTX 4060 扫描输出 / Radeon 780M 渲染）；niri 当前没有 <code>linux-drm-syncobj-v1</code>。</p>
-<h2 id="_4">排查<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<p>先确认「两台机器」：谁渲染、谁输出。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># 1) 哪块卡在扫描输出（connector 挂在谁下面）</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">for</span><span class="w"> </span>c<span class="w"> </span><span class="k">in</span><span class="w"> </span>/sys/class/drm/card<span class="o">[</span><span class="m">0</span>-9<span class="o">]</span>/device/vendor<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$c</span><span class="s2">: </span><span class="k">$(</span>cat<span class="w"> </span><span class="nv">$c</span><span class="k">)</span><span class="s2">"</span><span class="p">;</span><span class="w"> </span><span class="k">done</span><span class="w">   </span><span class="c1"># 0x10de=NVIDIA 0x1002=AMD</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>niri<span class="w"> </span>msg<span class="w"> </span>outputs<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">"Output|Current mode"</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># 2) niri 自己用哪个 render 节点（game 档是 renderD129=4060）</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>grep<span class="w"> </span>-oE<span class="w"> </span><span class="s1">'renderD[0-9]+'</span><span class="w"> </span>/proc/<span class="k">$(</span>pgrep<span class="w"> </span>-x<span class="w"> </span>niri<span class="k">)</span>/maps<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-u
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># 3) 客户端是不是走了另一块卡 —— Chrome 的例子</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1">#    chrome://gpu → GPU1 *ACTIVE* 0x1002 就是跨卡</span>
+<h1 id="_1">画面闪、撕、拖影，高刷下偶尔单帧花屏<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>屏幕接在一块卡上、程序却在另一块卡上渲染的时候，画面会各种不安分：偶尔闪一下、撕出一条上下错位、弹幕和滚动内容拖着影、高刷下任意窗口偶发一瞬间花屏。GPU 占用往往还没满，看着完全不像性能不够。</p>
+<h2 id="_2">问题描述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>两块卡分工：一块负责渲染，另一块负责扫描输出。渲染完的画面要过一遍内存交给输出那块卡，中间只有<strong>隐式同步</strong> —— 渲染的那块以为这帧写完了，输出的那块 DRM 却可能读到还没写完的缓冲，于是出现撕裂、单帧花屏、拖影。niri 目前没有 <code>linux-drm-syncobj-v1</code>，fence 没法显式传过去，所以这是结构性问题，不是调参能根治的。</p>
+<p>高刷下的"顿"和"残影"是同一类事的另一种表现：输出节拍被固定在刷新率上（本机 170 Hz），而实际帧时间比一个刷新间隔长得多，渲染和提交的相位对不上。</p>
+<h2 id="_3">解决办法<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>在 <code>config.kdl</code> 里打开这个调试项：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>debug {
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  wait-for-frame-completion-before-queueing
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>}
 </code></pre></div>
-<p>Chrome 的日志会直接点明：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>WARNING:ui/ozone/platform/wayland/host/wayland_drm.cc:114 : Drm prime capability is not supported
+<p>它让 niri 每帧等渲染完成再交给 DRM，把隐式同步那个窗口抹平。支持热重载，不用退游戏：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>niri<span class="w"> </span>validate<span class="w"> </span>-c<span class="w"> </span>~/.config/niri/config.kdl<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>niri<span class="w"> </span>msg<span class="w"> </span>action<span class="w"> </span>load-config-file
 </code></pre></div>
-<p>同类里的 <strong>VRR 不生效</strong>也在这里查（它决定画面节奏是否被固定刷新率锁死）：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>niri<span class="w"> </span>msg<span class="w"> </span>--json<span class="w"> </span>outputs<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">"import json,sys;[print(n,o['vrr_enabled']) for n,o in json.load(sys.stdin).items()]"</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>niri<span class="w"> </span>msg<span class="w"> </span>--json<span class="w"> </span>windows<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">"import json,sys;[print(w['app_id']) for w in json.load(sys.stdin)]"</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># 注意：Proton/XWayland 游戏的 app_id 是 *.exe（本机实测 pbz.exe），不是 steam_app_*</span>
+<p><strong>只在跨卡的场合开</strong>：niri 和客户端不在同一块卡上时才有意义（本机 <code>game</code> 档：niri 用 4060、Chrome 用核显），同卡档位加了是纯多余。</p>
+<p>代价实测不出来：同一场景开/关各跑几百秒，72.3 fps vs 69.3 fps、p99 20.44 ms vs 21.65 ms，属于场景噪声。</p>
+<p>顺手把 VRR 规则也修对，否则画面节奏还是会死锁在固定刷新率：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>window-rule {
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    match app-id=r#"^.*\.exe$"#
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    variable-refresh-rate true
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>}
 </code></pre></div>
-<h2 id="_5">原因<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p>跨 GPU 时，渲染完的缓冲要经内存/P2P 传给扫描输出的那张卡，只有<strong>隐式同步</strong>：</p>
-<ul>
-<li>渲染卡以为「这帧已经好了」，扫描卡的 DRM 却可能读到还没写完的缓冲 → 撕裂、单帧花屏、残影；</li>
-<li>没有 <code>linux-drm-syncobj-v1</code> 就无法把 fence 显式传过去，所以这是<strong>结构性</strong>问题，
-  不是调参能消掉的（niri issue #843 自 2024-12 一直开着，PR #3956 停在 0 review）。</li>
-</ul>
-<p>VRR 那一条属于同一类的另一种表现：输出节拍固定（本机 170 Hz），而实际帧时间远大于一个刷新间隔，
-渲染和提交的相位对不上，看着就是「顿」或「残影」。</p>
-<h2 id="_6">解决办法<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>debug {
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  wait-for-frame-completion-before-queueing
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>}
-</code></pre></div>
-<p>它让 niri 每帧<strong>等渲染完成再交给 DRM</strong>，把隐式同步的窗口抹平（官方定位是诊断/绕障选项，
-但社区 30 个相关 issue 全是「加了就修好」）。</p>
-<p><strong>支持热重载，不用退游戏</strong>：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>niri<span class="w"> </span>validate<span class="w"> </span>-c<span class="w"> </span>~/.config/niri/config.kdl<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>niri<span class="w"> </span>msg<span class="w"> </span>action<span class="w"> </span>load-config-file
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>journalctl<span class="w"> </span>--user<span class="w"> </span>-b<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"niri_config: loaded"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-3
-</code></pre></div>
-<p><strong>只在跨卡的档位开</strong>：本机 <code>game</code> 档（niri 用 4060、Chrome 用 780M）加；
-<code>normal</code> 档 niri 也走核显，同卡无跨卡合成，加了纯多余。</p>
-<p>顺带把 VRR 规则修对（不然画面节奏死锁在固定刷新率）：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>window-rule {
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    match app-id=r#"^.*\.exe$"#
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    variable-refresh-rate true
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>}
-</code></pre></div>
-<p>（<code>variable-refresh-rate true</code> = <code>VrrRule::On</code>，窗口可见即启用，<strong>不要求全屏</strong>。）</p>
-<h2 id="_7">怎么确认好了<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
-<p>撕裂/残影/单帧花屏消失；<code>vrr_enabled</code> 在游戏窗口可见时为 True。</p>
-<p>代价实测（PBZ，170 Hz，各 200/383 秒）：开 → 72.3 fps / p99 20.44 ms；关 → 69.3 fps / p99 21.65 ms。
-差 3 帧、1.2 ms 属场景噪声（关闭那局 GPU 占用 92% vs 90%），<strong>测不出代价</strong>。
-唯一负面报告是 niri #3774 在 300 Hz（3.33 ms 帧预算）上顿挫。</p>
-<h2 id="_8">参考<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
-<ul>
-<li>niri #2477（Screen tearing/flickering）</li>
-<li>niri #843 / PR #3956（explicit sync 未合并）</li>
-<li>niri wiki: Debug Options</li>
-</ul>
+<p>要注意 Proton / XWayland 游戏的 app-id 是 <code>*.exe</code>（本机实测 <code>pbz.exe</code>），不是 <code>steam_app_*</code>；<code>variable-refresh-rate true</code> 只要窗口可见就生效，不要求全屏。</p>
 
 
 

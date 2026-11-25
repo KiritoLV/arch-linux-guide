@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="混合显卡 + niri 的排错笔记：跨卡合成、频率过低、Chrome 硬解">
+        <meta name="description" content="混合显卡 + niri 上实际踩过的问题：画面闪烁撕裂、掉帧、游戏黑屏有声、Chrome 硬解、NTFS 读错">
       
       
         <meta name="author" content="KiritoLV">
@@ -27,7 +27,7 @@
     
     
       
-        <title>第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立 - Arch 排错笔记</title>
+        <title>游戏黑屏但有声音 - 我的 Arch Linux 问题记录</title>
       
     
     
@@ -94,7 +94,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="../.." title="Arch 排错笔记" class="md-header__button md-logo" aria-label="Arch 排错笔记" data-md-component="logo">
+    <a href="../.." title="我的 Arch Linux 问题记录" class="md-header__button md-logo" aria-label="我的 Arch Linux 问题记录" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,13 +108,13 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Arch 排错笔记
+            我的 Arch Linux 问题记录
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立
+              游戏黑屏但有声音
             
           </span>
         </div>
@@ -232,13 +232,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Arch 排错笔记" class="md-nav__button md-logo" aria-label="Arch 排错笔记" data-md-component="logo">
+    <a href="../.." title="我的 Arch Linux 问题记录" class="md-nav__button md-logo" aria-label="我的 Arch Linux 问题记录" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Arch 排错笔记
+    我的 Arch Linux 问题记录
   </label>
   
     <div class="md-nav__source">
@@ -358,7 +358,7 @@
   <span class="md-ellipsis">
     
   
-    第一类：跨卡合成 —— 闪屏 / 撕裂 / 残影 / 单帧花屏
+    画面闪、撕、拖影，高刷下偶尔单帧花屏
   
 
     
@@ -386,7 +386,7 @@
   <span class="md-ellipsis">
     
   
-    第二类：静默偶发卡顿 —— 频率太低（锁频解决）
+    每隔几秒卡一下，显卡占用明明很高
   
 
     
@@ -423,7 +423,7 @@
   <span class="md-ellipsis">
     
   
-    第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立
+    游戏黑屏但有声音
   
 
     
@@ -441,7 +441,7 @@
   <span class="md-ellipsis">
     
   
-    第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立
+    游戏黑屏但有声音
   
 
     
@@ -470,7 +470,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        现象
+        问题描述
       
     </span>
   </a>
@@ -481,62 +481,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        环境
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        排查
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        原因
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
         解决办法
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        怎么确认
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        参考
       
     </span>
   </a>
@@ -629,7 +574,7 @@
   <span class="md-ellipsis">
     
   
-    Chrome 在 NVIDIA 上根本不会硬解：独显直连就换 Firefox，有核显才指定核显
+    Chrome 在 NVIDIA 上根本不做硬解
   
 
     
@@ -720,7 +665,7 @@
   <span class="md-ellipsis">
     
   
-    NTFS 大文件读到一半 EIO、目录读到某个 inode 就中断
+    NTFS 大文件读到一半报 I/O 错误
   
 
     
@@ -771,7 +716,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        现象
+        问题描述
       
     </span>
   </a>
@@ -782,62 +727,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        环境
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        排查
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        原因
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
         解决办法
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        怎么确认
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        参考
       
     </span>
   </a>
@@ -864,72 +754,24 @@
   
 
 
-<h1 id="_1">第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<div class="admonition info">
-<p class="admonition-title">一句话</p>
-<p>混合显卡 PRIME（屏幕挂在核显上、游戏在 NVIDIA 上渲染）时，独显侧的呈现状态坏掉会让游戏<strong>黑屏但有声音</strong>。跑一次 <code>prime-run vkcube</code> 让它在 Proton 之外成功呈现一次，状态就刷好了，之后启动游戏正常。</p>
-</div>
-<h2 id="_2">现象<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<ul>
-<li>从 Steam 启动 Proton 游戏 → 窗口在、屏幕全黑，<strong>但音乐音效一直在响</strong>，键鼠有反应（能切窗口、能退出）</li>
-<li><code>nvidia-smi</code> 显示游戏确实在独显上跑：占用高、显存吃 1–2 GB —— <strong>不是游戏没起来，是画面没上屏</strong></li>
-<li>反复启动游戏，偶尔一次就出画面；<strong>成功一次之后一直到重启都不再犯</strong></li>
-<li>同一个程序从 Steam 之外跑（<code>prime-run vkcube</code>、非 Steam 快捷方式）画面正常 —— 只有 Proton 那条路坏</li>
-</ul>
-<h2 id="_3">环境<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Arch Linux，niri 26.04（本机 <code>niri-gpu-profile normal</code> 档：<code>ignore-drm-device</code> 忽略 4060，niri 用 Radeon 780M 合成）</li>
-<li>外接屏接在<strong>核显侧</strong>接口（<code>amdgpu</code>），游戏用 <code>DRI_PRIME=1</code> 跑在 RTX 4060 上</li>
-<li>音频走 PipeWire，与显示路径无关 —— 所以永远正常</li>
-<li>上游更普遍的形态：Intel 核显 + NVIDIA 独显、Hyprland/XWayland、Steam 64 位 <code>steamrt64</code> 客户端</li>
-</ul>
-<h2 id="_4">排查<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># 1) 先抓一次「失败的那次」的 Proton 日志，再动别的</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">PROTON_LOG</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">PROTON_LOG_DIR</span><span class="o">=</span>/tmp<span class="w"> </span>%command%
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">L</span><span class="o">=</span><span class="k">$(</span>ls<span class="w"> </span>-t<span class="w"> </span>/tmp/steam-*.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-1<span class="k">)</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># 2) 换链失败的签名</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>grep<span class="w"> </span>-ac<span class="w"> </span><span class="s2">"Failed to create swapchain, vr -13"</span><span class="w"> </span><span class="s2">"</span><span class="nv">$L</span><span class="s2">"</span><span class="w">      </span><span class="c1"># &gt;0 = 命中本条</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>grep<span class="w"> </span>-aE<span class="w"> </span><span class="s2">"Creating swapchain|Ensure maximum latency"</span><span class="w"> </span><span class="s2">"</span><span class="nv">$L</span><span class="s2">"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-3
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1">#    健康的一局：-13 计数为 0，且只有一条 Creating swapchain</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># 3) 游戏是不是真在独显上（排除「根本没起来」）</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>nvidia-smi<span class="w"> </span>pmon<span class="w"> </span>-c<span class="w"> </span><span class="m">1</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># 4) 有没有 GPU hang / Xid</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s2">"nvidia|amdgpu"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s2">"xid|hang|reset"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail
+<h1 id="_1">游戏黑屏但有声音<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>混合显卡的机器上（屏幕接在核显上、游戏跑在 NVIDIA 上），从 Steam 启动游戏后窗口是黑的，<strong>但声音一切正常</strong>，键鼠也有反应，<code>nvidia-smi</code> 里游戏明明在独显上满载跑着，显存也吃掉了一两个 G。</p>
+<p>这种局重开几次，偶尔一次就出画面；而且<strong>出过一次之后就不再犯了</strong>，能一路正常到下次重启。</p>
+<h2 id="_2">问题描述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>游戏不是没起来，是画面没上屏。</p>
+<p>独显这一侧"把画面交给合成器"的那一步，在跨卡拓扑上第一次建立时可能失败，返回 <code>VK_ERROR_UNKNOWN</code>（日志里是 <code>Failed to create swapchain, vr -13</code>）。vkd3d-proton 的处理是<strong>每次呈现都重试</strong>，所以启动时失败一次，这个游戏进程就再也起不来了 —— 几千次重试、窗口恒定黑。声音走的是 PipeWire 的另一条路，完全不受影响，于是就变成"黑屏有声"这种看着像游戏挂了、其实还活得好好的状态。</p>
+<p>重开游戏等于把这次只做一次的协商重掷一遍，所以偶尔会中；中过的那一次就是<strong>一次成功的呈现</strong>，独显侧的状态从此是好的。</p>
+<p>上游至今还挂着的 ValveSoftware/steam-for-linux <strong>#13876</strong> 就是这个，帖子里别人的结论也一样：开机后第一个在 NVIDIA 上成功呈现的东西必须来自 Steam / Proton 之外，之后 Steam 里的游戏就正常。</p>
+<h2 id="_3">解决办法<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>跑一下 vkcube，让独显先在 Proton 之外成功呈现一次：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>prime-run<span class="w"> </span>vkcube<span class="w"> </span>--c<span class="w"> </span><span class="m">5</span>
 </code></pre></div>
-<p>判据：<strong>有声音 + 游戏在独显上跑 + 4) 干净</strong> → 本条。</p>
-<h2 id="_5">原因<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p><code>vr -13</code> 就是 <code>VK_ERROR_UNKNOWN</code>，来自 <code>vkCreateSwapchainKHR</code>。整条链：</p>
-<ol>
-<li>独显一侧的呈现（present）状态没建立好 / 已经坏掉；</li>
-<li>Proton 游戏在 pressure-vessel 容器 + <code>steamrt64</code> 运行时里，于「PRIME 跨卡、屏幕由核显驱动」的拓扑上创建 swapchain，这条协商对不上 → 返回 <code>VK_ERROR_UNKNOWN</code>；</li>
-<li>vkd3d-proton <strong>每次 present 都重试 recreate</strong>，所以启动时失败一次就 latch 整个进程：几千次重试、永不恢复、窗口恒定黑 —— 画面没了，声音（另一条路）照常 → <strong>黑屏有声</strong>；</li>
-<li>重开游戏等于把这次"只做一次"的协商重掷一遍，所以偶尔能中；中过的那次是一次<strong>成功的呈现</strong>，从此驱动侧状态就是好的，一直到状态再次坏掉。</li>
-</ol>
-<p><strong>证据等级（别混着讲）</strong></p>
-<ul>
-<li><strong>实测</strong>：本机反复出现，<code>vkcube</code> 一次即治好（多例）；上游 #13876 里多人给出同一现象与同一做法</li>
-<li><strong>上游结论</strong>：Steam 64 位 <code>steamrt64</code> 运行时（build 1794424036，2026-11-12）之后，<strong>"开机后第一个在 NVIDIA 上渲染的东西必须来自 Proton/pressure-vessel 之外，之后 Steam 里的游戏就正常"</strong>（#13876 评论原话）；同帖还有 Battle.net 同症、同样被这招治好</li>
-<li><strong>未证实（不要当结论讲）</strong>：跨卡 dmabuf 的 modifier/格式协商具体卡在哪一环；也观察到过日志里 <code>-13</code> 计数为 <strong>0</strong> 的黑屏被同一招治好 —— 最终落点是"驱动/呈现状态"，不止一个错误码</li>
-</ul>
-<h2 id="_6">解决办法<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>prime-run<span class="w"> </span>vkcube<span class="w"> </span>--c<span class="w"> </span><span class="m">5</span><span class="w">                   </span><span class="c1"># 本机实测：5 帧、0.3 s、exit 0</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>prime-run<span class="w"> </span>vkcube<span class="w"> </span>--wsi<span class="w"> </span>xcb<span class="w"> </span>--c<span class="w"> </span><span class="m">60</span><span class="w">        </span><span class="c1"># 上游那台用这条；哪个 WSI 都只是「让它呈现一次」</span>
+<p>5 帧、不到一秒、正常退出就行，屏幕上闪个小窗，不用管它。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>prime-run<span class="w"> </span>vkcube<span class="w"> </span>--wsi<span class="w"> </span>xcb<span class="w"> </span>--c<span class="w"> </span><span class="m">60</span>
 </code></pre></div>
-<p><strong>什么时候跑都行</strong> —— 不限于开机那一刻，游戏黑着的时候跑也有效。它只要成功呈现一次，独显侧的呈现状态就刷好了，之后启动游戏就出画面（稳妥顺序：跑完再起游戏）。</p>
-<h2 id="_7">怎么确认<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># 跑完 vkcube 后启动游戏：有画面 = 生效</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># 想量化就看这一局日志的计数</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>grep<span class="w"> </span>-ac<span class="w"> </span><span class="s2">"Failed to create swapchain, vr -13"</span><span class="w"> </span>~/steam-&lt;appid&gt;.log<span class="w">   </span><span class="c1"># 期望 0</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>grep<span class="w"> </span>-ac<span class="w"> </span><span class="s2">"Creating swapchain"</span><span class="w"> </span>~/steam-&lt;appid&gt;.log<span class="w">                   </span><span class="c1"># 期望 1</span>
-</code></pre></div>
-<p>判据是「这一局的日志」，不是「这次能开」—— 重开本身就有概率中，光看能不能开不算证据。</p>
-<h2 id="_8">参考<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
-<ul>
-<li>ValveSoftware/steam-for-linux <strong>#13876</strong>：<code>steamrt64</code> 运行时回归导致 NVIDIA+Intel 混合显卡下 <code>vr -13</code> / 游戏窗口不可见；评论区给出结论与 <code>prime-run vkcube</code> 做法</li>
-</ul>
+<p>上游那台用的是这条（60 帧、指定 xcb 这个 WSI），效果一样 —— 关键只是"成功呈现一次"，用哪个写法都行。</p>
+<p><strong>什么时候跑都行</strong>，不限于开机那一刻，游戏已经黑着的时候跑也有效。稳妥的顺序是跑完再启动游戏。</p>
+<p>代价只有一个：这个状态不是永久的，重启或者状态再次坏掉之后，可能还要再来一次。</p>
 
 
 

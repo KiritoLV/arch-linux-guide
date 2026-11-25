@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="混合显卡 + niri 的排错笔记：跨卡合成、频率过低、Chrome 硬解">
+        <meta name="description" content="混合显卡 + niri 上实际踩过的问题：画面闪烁撕裂、掉帧、游戏黑屏有声、Chrome 硬解、NTFS 读错">
       
       
         <meta name="author" content="KiritoLV">
@@ -25,7 +25,7 @@
     
     
       
-        <title>Arch 排错笔记</title>
+        <title>我的 Arch Linux 问题记录</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#arch" class="md-skip">
+        <a href="#arch-linux" class="md-skip">
           跳转至
         </a>
       
@@ -92,7 +92,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="." title="Arch 排错笔记" class="md-header__button md-logo" aria-label="Arch 排错笔记" data-md-component="logo">
+    <a href="." title="我的 Arch Linux 问题记录" class="md-header__button md-logo" aria-label="我的 Arch Linux 问题记录" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -106,7 +106,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Arch 排错笔记
+            我的 Arch Linux 问题记录
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -230,13 +230,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Arch 排错笔记" class="md-nav__button md-logo" aria-label="Arch 排错笔记" data-md-component="logo">
+    <a href="." title="我的 Arch Linux 问题记录" class="md-nav__button md-logo" aria-label="我的 Arch Linux 问题记录" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Arch 排错笔记
+    我的 Arch Linux 问题记录
   </label>
   
     <div class="md-nav__source">
@@ -352,17 +352,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        写作约定
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -445,7 +434,7 @@
   <span class="md-ellipsis">
     
   
-    第一类：跨卡合成 —— 闪屏 / 撕裂 / 残影 / 单帧花屏
+    画面闪、撕、拖影，高刷下偶尔单帧花屏
   
 
     
@@ -473,7 +462,7 @@
   <span class="md-ellipsis">
     
   
-    第二类：静默偶发卡顿 —— 频率太低（锁频解决）
+    每隔几秒卡一下，显卡占用明明很高
   
 
     
@@ -501,7 +490,7 @@
   <span class="md-ellipsis">
     
   
-    第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立
+    游戏黑屏但有声音
   
 
     
@@ -592,7 +581,7 @@
   <span class="md-ellipsis">
     
   
-    Chrome 在 NVIDIA 上根本不会硬解：独显直连就换 Firefox，有核显才指定核显
+    Chrome 在 NVIDIA 上根本不做硬解
   
 
     
@@ -683,7 +672,7 @@
   <span class="md-ellipsis">
     
   
-    NTFS 大文件读到一半 EIO、目录读到某个 inode 就中断
+    NTFS 大文件读到一半报 I/O 错误
   
 
     
@@ -763,17 +752,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        写作约定
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -794,73 +772,23 @@
   
 
 
-<h1 id="arch">Arch 上的排错笔记<a class="headerlink" href="#arch" title="Permanent link">&para;</a></h1>
-<p>混合显卡 + niri 的机器上，显卡相关的问题基本只有<strong>三类</strong>，其他都是这三类的变体：</p>
-<ol>
-<li><strong>跨卡合成</strong>：niri 在一块卡上扫描输出、客户端在另一块卡上渲染，缺显式同步 → 闪屏 / 撕裂 / 残影 / 单帧花屏。</li>
-<li><strong>静默偶发卡顿</strong>：频率掉进深睡档，升频来不及 → 几秒顿一下，没有任何日志。</li>
-<li><strong>跨卡呈现路径没建立</strong>：开机后独显的第一个成功呈现来自 Steam/Proton 内部 → swapchain 创建失败并锁死整个进程，游戏黑屏但声音正常；先在 Proton 之外呈现一次就没事。</li>
-</ol>
-<p>Chrome 的硬解是前两类问题的<strong>常见触发器</strong>：Chromium 不支持 NVIDIA 硬解，独显直连只能软解；有核显时改指核显，硬解是有了，但立刻引入跨卡合成。</p>
+<h1 id="arch-linux">我的 Arch Linux 问题记录<a class="headerlink" href="#arch-linux" title="Permanent link">&para;</a></h1>
+<p>记一些实际踩过、又不好一眼看出根因的问题。每条只写三件事：<strong>问题是什么、为什么会这样、怎么解决</strong>。</p>
+<p>前提：这台机器是混合显卡笔记本（Radeon 780M + RTX 4060 Laptop），桌面是 niri，所以显卡相关的问题占了大半。</p>
 <h2 id="_1">显卡<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>问题</th>
-<th>一句话</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="%E6%98%BE%E5%8D%A1/01-%E8%B7%A8%E5%8D%A1%E5%90%88%E6%88%90-%E9%97%AA%E5%B1%8F%E6%92%95%E8%A3%82%E5%8D%A1%E9%A1%BF%E8%8A%B1%E5%B1%8F/">第一类：跨卡合成 —— 闪屏 / 撕裂 / 残影 / 单帧花屏</a></td>
-<td>niri 在一块卡上扫描输出、客户端在另一块卡上渲染，中间没有显式同步，问题全从这来。</td>
-</tr>
-<tr>
-<td><a href="%E6%98%BE%E5%8D%A1/02-%E9%9D%99%E9%BB%98%E5%81%B6%E5%8F%91%E5%8D%A1%E9%A1%BF-%E9%A2%91%E7%8E%87%E5%A4%AA%E4%BD%8E/">第二类：静默偶发卡顿 —— 频率太低（锁频解决）</a></td>
-<td>画面几秒顿一下、滑动先卡后顺，GPU 占用却是高的：卡在升频，不是卡在算力。</td>
-</tr>
-<tr>
-<td><a href="%E6%98%BE%E5%8D%A1/03-%E8%B7%A8%E5%8D%A1%E9%BB%91%E5%B1%8F-%E6%9C%89%E5%A3%B0%E9%9F%B3/">第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立</a></td>
-<td>游戏黑屏但音乐一直在响；跑一次 <code>prime-run vkcube</code> 让独显在 Proton 之外成功呈现一次，状态就刷好了。</td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li><a href="%E6%98%BE%E5%8D%A1/01-%E8%B7%A8%E5%8D%A1%E5%90%88%E6%88%90-%E9%97%AA%E5%B1%8F%E6%92%95%E8%A3%82%E5%8D%A1%E9%A1%BF%E8%8A%B1%E5%B1%8F/">画面闪、撕、拖影，高刷下偶尔单帧花屏</a> —— 渲染卡和输出卡不是同一块时，缺显式同步。</li>
+<li><a href="%E6%98%BE%E5%8D%A1/02-%E9%9D%99%E9%BB%98%E5%81%B6%E5%8F%91%E5%8D%A1%E9%A1%BF-%E9%A2%91%E7%8E%87%E5%A4%AA%E4%BD%8E/">每隔几秒卡一下，显卡占用明明很高</a> —— 掉进深睡档，升频来不及；给个频率地板就没了。</li>
+<li><a href="%E6%98%BE%E5%8D%A1/03-%E8%B7%A8%E5%8D%A1%E9%BB%91%E5%B1%8F-%E6%9C%89%E5%A3%B0%E9%9F%B3/">游戏黑屏但有声音</a> —— 独显侧的呈现状态坏了；跑一次 <code>prime-run vkcube</code> 刷回来。</li>
+</ul>
 <h2 id="chrome">Chrome<a class="headerlink" href="#chrome" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>问题</th>
-<th>一句话</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="Chrome/01-Chrome%E4%B8%8D%E6%94%AF%E6%8C%81NVIDIA%E7%A1%AC%E8%A7%A3-%E7%94%A8Firefox%E6%88%96%E6%A0%B8%E6%98%BE/">Chrome 在 NVIDIA 上根本不会硬解：独显直连就换 Firefox，有核显才指定核显</a></td>
-<td>Chromium 直接跳过 nvidia-drm，独显上永远是软解；Firefox 才支持 NVIDIA 硬解。</td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li><a href="Chrome/01-Chrome%E4%B8%8D%E6%94%AF%E6%8C%81NVIDIA%E7%A1%AC%E8%A7%A3-%E7%94%A8Firefox%E6%88%96%E6%A0%B8%E6%98%BE/">Chrome 在 NVIDIA 上根本不做硬解</a> —— Chromium 写死跳过 nvidia-drm；要么换 Firefox，要么让 Chrome 走核显。</li>
+</ul>
 <h2 id="_2">存储<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>问题</th>
-<th>一句话</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="%E5%AD%98%E5%82%A8/01-NTFS%E8%AF%BB%E5%88%B0%E4%B8%80%E5%8D%8AEIO/">NTFS 大文件读到一半 EIO、目录读到某个 inode 就中断</a></td>
-<td>内核 <code>fs/ntfs</code>（新驱动）7.3.5 的已知 bug，7.3.6 修了；与 NTFS 卷是否 dirty 无关。</td>
-</tr>
-</tbody>
-</table>
-<h2 id="_3">写作约定<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<ol>
-<li>只写<strong>实测</strong>结论；推断标「推断」并写清排除过程。</li>
-<li>每条给<strong>判据命令</strong>，能自己复核。</li>
-<li>写因果链：因为 A 导致 B，在 C 条件下出现 D —— 不写「试这个」。</li>
-</ol>
+<ul>
+<li><a href="%E5%AD%98%E5%82%A8/01-NTFS%E8%AF%BB%E5%88%B0%E4%B8%80%E5%8D%8AEIO/">NTFS 大文件读到一半报 I/O 错误</a> —— 内核 <code>fs/ntfs</code> 7.3.5 的 bug，7.3.6 修了。</li>
+</ul>
 
 
 

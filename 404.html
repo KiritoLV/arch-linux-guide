@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="混合显卡 + niri 的排错笔记：跨卡合成、频率过低、Chrome 硬解">
+        <meta name="description" content="混合显卡 + niri 上实际踩过的问题：画面闪烁撕裂、掉帧、游戏黑屏有声、Chrome 硬解、NTFS 读错">
       
       
         <meta name="author" content="KiritoLV">
@@ -23,7 +23,7 @@
     
     
       
-        <title>Arch 排错笔记</title>
+        <title>我的 Arch Linux 问题记录</title>
       
     
     
@@ -85,7 +85,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="/." title="Arch 排错笔记" class="md-header__button md-logo" aria-label="Arch 排错笔记" data-md-component="logo">
+    <a href="/." title="我的 Arch Linux 问题记录" class="md-header__button md-logo" aria-label="我的 Arch Linux 问题记录" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -99,7 +99,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Arch 排错笔记
+            我的 Arch Linux 问题记录
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -223,13 +223,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/." title="Arch 排错笔记" class="md-nav__button md-logo" aria-label="Arch 排错笔记" data-md-component="logo">
+    <a href="/." title="我的 Arch Linux 问题记录" class="md-nav__button md-logo" aria-label="我的 Arch Linux 问题记录" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Arch 排错笔记
+    我的 Arch Linux 问题记录
   </label>
   
     <div class="md-nav__source">
@@ -347,7 +347,7 @@
   <span class="md-ellipsis">
     
   
-    第一类：跨卡合成 —— 闪屏 / 撕裂 / 残影 / 单帧花屏
+    画面闪、撕、拖影，高刷下偶尔单帧花屏
   
 
     
@@ -375,7 +375,7 @@
   <span class="md-ellipsis">
     
   
-    第二类：静默偶发卡顿 —— 频率太低（锁频解决）
+    每隔几秒卡一下，显卡占用明明很高
   
 
     
@@ -403,7 +403,7 @@
   <span class="md-ellipsis">
     
   
-    第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立
+    游戏黑屏但有声音
   
 
     
@@ -494,7 +494,7 @@
   <span class="md-ellipsis">
     
   
-    Chrome 在 NVIDIA 上根本不会硬解：独显直连就换 Firefox，有核显才指定核显
+    Chrome 在 NVIDIA 上根本不做硬解
   
 
     
@@ -585,7 +585,7 @@
   <span class="md-ellipsis">
     
   
-    NTFS 大文件读到一半 EIO、目录读到某个 inode 就中断
+    NTFS 大文件读到一半报 I/O 错误
   
 
     

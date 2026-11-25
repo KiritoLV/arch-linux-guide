@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="混合显卡 + niri 的排错笔记：跨卡合成、频率过低、Chrome 硬解">
+        <meta name="description" content="混合显卡 + niri 上实际踩过的问题：画面闪烁撕裂、掉帧、游戏黑屏有声、Chrome 硬解、NTFS 读错">
       
       
         <meta name="author" content="KiritoLV">
@@ -27,7 +27,7 @@
     
     
       
-        <title>Chrome 在 NVIDIA 上根本不会硬解：独显直连就换 Firefox，有核显才指定核显 - Arch 排错笔记</title>
+        <title>Chrome 在 NVIDIA 上根本不做硬解 - 我的 Arch Linux 问题记录</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chrome-nvidia-firefox" class="md-skip">
+        <a href="#chrome-nvidia" class="md-skip">
           跳转至
         </a>
       
@@ -94,7 +94,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="../.." title="Arch 排错笔记" class="md-header__button md-logo" aria-label="Arch 排错笔记" data-md-component="logo">
+    <a href="../.." title="我的 Arch Linux 问题记录" class="md-header__button md-logo" aria-label="我的 Arch Linux 问题记录" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,13 +108,13 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Arch 排错笔记
+            我的 Arch Linux 问题记录
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Chrome 在 NVIDIA 上根本不会硬解：独显直连就换 Firefox，有核显才指定核显
+              Chrome 在 NVIDIA 上根本不做硬解
             
           </span>
         </div>
@@ -232,13 +232,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Arch 排错笔记" class="md-nav__button md-logo" aria-label="Arch 排错笔记" data-md-component="logo">
+    <a href="../.." title="我的 Arch Linux 问题记录" class="md-nav__button md-logo" aria-label="我的 Arch Linux 问题记录" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Arch 排错笔记
+    我的 Arch Linux 问题记录
   </label>
   
     <div class="md-nav__source">
@@ -356,7 +356,7 @@
   <span class="md-ellipsis">
     
   
-    第一类：跨卡合成 —— 闪屏 / 撕裂 / 残影 / 单帧花屏
+    画面闪、撕、拖影，高刷下偶尔单帧花屏
   
 
     
@@ -384,7 +384,7 @@
   <span class="md-ellipsis">
     
   
-    第二类：静默偶发卡顿 —— 频率太低（锁频解决）
+    每隔几秒卡一下，显卡占用明明很高
   
 
     
@@ -412,7 +412,7 @@
   <span class="md-ellipsis">
     
   
-    第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立
+    游戏黑屏但有声音
   
 
     
@@ -514,7 +514,7 @@
   <span class="md-ellipsis">
     
   
-    Chrome 在 NVIDIA 上根本不会硬解：独显直连就换 Firefox，有核显才指定核显
+    Chrome 在 NVIDIA 上根本不做硬解
   
 
     
@@ -532,7 +532,7 @@
   <span class="md-ellipsis">
     
   
-    Chrome 在 NVIDIA 上根本不会硬解：独显直连就换 Firefox，有核显才指定核显
+    Chrome 在 NVIDIA 上根本不做硬解
   
 
     
@@ -561,7 +561,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        现象
+        问题描述
       
     </span>
   </a>
@@ -572,62 +572,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        环境
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        排查
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        原因
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
         解决办法
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        怎么确认好了
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        参考
       
     </span>
   </a>
@@ -720,7 +665,7 @@
   <span class="md-ellipsis">
     
   
-    NTFS 大文件读到一半 EIO、目录读到某个 inode 就中断
+    NTFS 大文件读到一半报 I/O 错误
   
 
     
@@ -771,7 +716,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        现象
+        问题描述
       
     </span>
   </a>
@@ -782,62 +727,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        环境
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        排查
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        原因
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
         解决办法
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        怎么确认好了
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        参考
       
     </span>
   </a>
@@ -864,53 +754,28 @@
   
 
 
-<h1 id="chrome-nvidia-firefox">Chrome 在 NVIDIA 上根本不会硬解：独显直连就换 Firefox，有核显才指定核显<a class="headerlink" href="#chrome-nvidia-firefox" title="Permanent link">&para;</a></h1>
-<div class="admonition info">
-<p class="admonition-title">一句话</p>
-<p>Chromium 直接跳过 nvidia-drm，独显上永远是软解；Firefox 才支持 NVIDIA 硬解。</p>
-</div>
-<h2 id="_1">现象<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p><code>chrome://gpu</code> 里 <code>Video Decode: Hardware accelerated</code>，但
-<code>Video Acceleration Information → Decoding:</code> <strong>一条都不列</strong>；播放时 CPU 高、风扇转，
-<code>nvidia-smi</code> 的 NVDEC 占用为 0%。</p>
-<h2 id="_2">环境<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>Chrome 158 / Wayland / 混合显卡（4060 + 780M）。</p>
-<h2 id="_3">排查<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Chrome 自己的日志直接说了</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># WARNING:media/gpu/vaapi/vaapi_wrapper.cc:131 : Should skip nVidia device named: nvidia-drm</span>
+<h1 id="chrome-nvidia">Chrome 在 NVIDIA 上根本不做硬解<a class="headerlink" href="#chrome-nvidia" title="Permanent link">&para;</a></h1>
+<p><code>chrome://gpu</code> 里那行 <code>Video Decode: Hardware accelerated</code> 看着挺正常，但往下 <code>Video Acceleration Information → Decoding:</code> <strong>一条都不列</strong>；播视频时 CPU 高、风扇转，<code>nvidia-smi</code> 里 NVDEC 占用是 0%。</p>
+<h2 id="_1">问题描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Chromium 的 VA-API 实现里写死了跳过 NVIDIA 设备，它自己的日志就直说：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>WARNING:media/gpu/vaapi/vaapi_wrapper.cc:131 : Should skip nVidia device named: nvidia-drm
 </code></pre></div>
-<p>也就是说：<strong><code>Hardware accelerated</code> 这一行是假象</strong>，判断硬解有没有生效只看 <code>Decoding:</code> 列表。</p>
-<h2 id="_4">原因<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<p>Chromium 的 VA-API 实现里写死了跳过 NVIDIA 设备。它不是「配错了」，而是<strong>不支持</strong> ——
-所以 NVIDIA 上无论怎么加 flag，<code>&lt;video&gt;</code> 都会回退到软解。</p>
-<p>对比：Firefox 的 VA-API（以及 NVDEC）<strong>支持 NVIDIA</strong>，在纯 NVIDIA 环境里能真正硬解。</p>
-<h2 id="_5">解决办法<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p>按你的机器形态选一条路：</p>
-<p><strong>A. 独显直连、系统里只有 NVIDIA</strong> → 用 <strong>Firefox</strong> 看视频。
-Firefox 支持 NVIDIA 硬解，不需要任何「绕路」，也不会有跨卡问题：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>about:support → Media → Hardware Video Decoding: enabled / 看 FFmpegVpxVideoDecoder 之类
+<p>所以不是"没配好"，是<strong>不支持</strong>。在 NVIDIA 上怎么加 flag，<code>&lt;video&gt;</code> 最后都会回退到软解；那行 <code>Hardware accelerated</code> 是假象，判断硬解有没有生效只认 <code>Decoding:</code> 列表。</p>
+<p>Firefox 不一样，它的 VA-API / NVDEC 是支持 NVIDIA 的。</p>
+<h2 id="_2">解决办法<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>按机器形态选一条：</p>
+<p><strong>只有 NVIDIA（独显直连）</strong> → 视频用 Firefox。什么都不用绕，也没有跨卡问题。</p>
+<p><strong>有核显（本机这种）</strong> → 让 Chrome 跑在核显上做硬解：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a># ~/.config/chrome-flags.conf
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>--render-node-override=/dev/dri/renderD128
 </code></pre></div>
-<p><strong>B. 有核显（本机这种）</strong> → 让 Chrome 跑在核显上做硬解：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a># ~/.config/chrome-flags.conf
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>--render-node-override=/dev/dri/renderD128      # 核显 render 节点，编号用 lspci/by-path 确认
+<p>节点编号用 <code>lspci</code> 或 <code>/dev/dri/by-path/</code> 确认一下再写死。这样 h264 / vp9 / hevc / av1 都能硬解，代价是引入了跨卡合成（Chrome 在核显渲染、合成器在独显输出），画面要是开始撕、拖影，就按「画面闪、撕、拖影」那篇处理。</p>
+<p>一个常见的坑：<code>--use-gl=egl</code> 在 Chrome 158 是<strong>非法值</strong>，会让 GPU 初始化失败、整个浏览器退化成软件渲染（日志里 <code>gl_factory.cc:110 … not found in allowed implementations</code>）。</p>
+<p>配好之后 <code>chrome://gpu</code> 里应该能看到：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>GL_RENDERER: ANGLE (AMD, AMD Radeon 780M Graphics (radeonsi phoenix ACO), …)
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Decoding: h264 baseline/main/high、vp9 profile0/2、hevc main/main10、av1 main
 </code></pre></div>
-<p>这条路能拿到完整硬解（h264 / vp9 / hevc / av1），但<strong>代价是跨卡合成</strong>：
-Chrome 在 780M 渲染、niri 在 4060 扫描输出 → 撕裂纹/残影 →
-按 <a href="../../%E6%98%BE%E5%8D%A1/01-%E8%B7%A8%E5%8D%A1%E5%90%88%E6%88%90-%E9%97%AA%E5%B1%8F%E6%92%95%E8%A3%82%E5%8D%A1%E9%A1%BF%E8%8A%B1%E5%B1%8F/">第一类：跨卡合成</a> 那套处理。</p>
-<p>常见误区：<code>--use-gl=egl</code> 在 Chrome 158 是<strong>非法值</strong>，会让 GPU 初始化失败、全软件渲染
-（<code>gl_factory.cc:110 … not found in allowed implementations</code>）。</p>
-<h2 id="_6">怎么确认好了<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
-<p><code>chrome://gpu</code>：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>GL_RENDERER: ANGLE (AMD, AMD Radeon 780M Graphics (radeonsi phoenix ACO), …)
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Decoding: h264 baseline/main/high、vp9 profile0/2、hevc main/main10、av1 main
-</code></pre></div>
-<p>本机实测（B 站视频 + 弹幕）：Chrome 合计 CPU 51%、CPU 52–54 ℃、风扇 3700–3800 RPM。
-<strong>别把「CPU 降低」当优化证据</strong> —— GPU 被整关掉时 CPU 反而可能更低，先确认 <code>GL_RENDERER</code> 是真显卡。</p>
-<h2 id="_7">参考<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>media/gpu/vaapi/vaapi_wrapper.cc:131</code>（跳过 nvidia-drm）</li>
-<li><a href="../../%E6%98%BE%E5%8D%A1/01-%E8%B7%A8%E5%8D%A1%E5%90%88%E6%88%90-%E9%97%AA%E5%B1%8F%E6%92%95%E8%A3%82%E5%8D%A1%E9%A1%BF%E8%8A%B1%E5%B1%8F/">显卡/第一类：跨卡合成</a></li>
-</ul>
+<p>顺带一句：<strong>别拿"CPU 占用变低"当优化生效的证据</strong>，GPU 被整关掉时 CPU 反而可能更低，先确认 <code>GL_RENDERER</code> 里真是那块显卡。</p>
 
 
 

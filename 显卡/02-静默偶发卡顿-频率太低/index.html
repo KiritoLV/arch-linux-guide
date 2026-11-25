@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="混合显卡 + niri 的排错笔记：跨卡合成、频率过低、Chrome 硬解">
+        <meta name="description" content="混合显卡 + niri 上实际踩过的问题：画面闪烁撕裂、掉帧、游戏黑屏有声、Chrome 硬解、NTFS 读错">
       
       
         <meta name="author" content="KiritoLV">
@@ -27,7 +27,7 @@
     
     
       
-        <title>第二类：静默偶发卡顿 —— 频率太低（锁频解决） - Arch 排错笔记</title>
+        <title>每隔几秒卡一下，显卡占用明明很高 - 我的 Arch Linux 问题记录</title>
       
     
     
@@ -94,7 +94,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="../.." title="Arch 排错笔记" class="md-header__button md-logo" aria-label="Arch 排错笔记" data-md-component="logo">
+    <a href="../.." title="我的 Arch Linux 问题记录" class="md-header__button md-logo" aria-label="我的 Arch Linux 问题记录" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,13 +108,13 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Arch 排错笔记
+            我的 Arch Linux 问题记录
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              第二类：静默偶发卡顿 —— 频率太低（锁频解决）
+              每隔几秒卡一下，显卡占用明明很高
             
           </span>
         </div>
@@ -232,13 +232,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Arch 排错笔记" class="md-nav__button md-logo" aria-label="Arch 排错笔记" data-md-component="logo">
+    <a href="../.." title="我的 Arch Linux 问题记录" class="md-nav__button md-logo" aria-label="我的 Arch Linux 问题记录" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Arch 排错笔记
+    我的 Arch Linux 问题记录
   </label>
   
     <div class="md-nav__source">
@@ -358,7 +358,7 @@
   <span class="md-ellipsis">
     
   
-    第一类：跨卡合成 —— 闪屏 / 撕裂 / 残影 / 单帧花屏
+    画面闪、撕、拖影，高刷下偶尔单帧花屏
   
 
     
@@ -395,7 +395,7 @@
   <span class="md-ellipsis">
     
   
-    第二类：静默偶发卡顿 —— 频率太低（锁频解决）
+    每隔几秒卡一下，显卡占用明明很高
   
 
     
@@ -413,7 +413,7 @@
   <span class="md-ellipsis">
     
   
-    第二类：静默偶发卡顿 —— 频率太低（锁频解决）
+    每隔几秒卡一下，显卡占用明明很高
   
 
     
@@ -442,7 +442,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        现象
+        问题描述
       
     </span>
   </a>
@@ -453,62 +453,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        环境
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        排查
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        原因
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
         解决办法
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        怎么确认好了
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        参考
       
     </span>
   </a>
@@ -538,7 +483,7 @@
   <span class="md-ellipsis">
     
   
-    第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立
+    游戏黑屏但有声音
   
 
     
@@ -629,7 +574,7 @@
   <span class="md-ellipsis">
     
   
-    Chrome 在 NVIDIA 上根本不会硬解：独显直连就换 Firefox，有核显才指定核显
+    Chrome 在 NVIDIA 上根本不做硬解
   
 
     
@@ -720,7 +665,7 @@
   <span class="md-ellipsis">
     
   
-    NTFS 大文件读到一半 EIO、目录读到某个 inode 就中断
+    NTFS 大文件读到一半报 I/O 错误
   
 
     
@@ -771,7 +716,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        现象
+        问题描述
       
     </span>
   </a>
@@ -782,62 +727,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        环境
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        排查
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        原因
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
         解决办法
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        怎么确认好了
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        参考
       
     </span>
   </a>
@@ -864,45 +754,22 @@
   
 
 
-<h1 id="_1">第二类：静默偶发卡顿 —— 频率太低（锁频解决）<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<div class="admonition info">
-<p class="admonition-title">一句话</p>
-<p>画面几秒顿一下、滑动先卡后顺，GPU 占用却是高的：卡在升频，不是卡在算力。</p>
-</div>
-<h2 id="_2">现象<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>没有报错、没有花屏，就是<strong>安静地</strong>每隔几秒卡一下：</p>
-<ul>
-<li>滑动工作区：先卡一下 → 很顺 → 几秒后又卡一下</li>
-<li>看视频/带动画界面偶发整段掉帧</li>
-<li><code>mangohud</code> 之类显示占用很高，看起来「显卡在干活」</li>
-</ul>
-<h2 id="_3">环境<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<p>niri + NVIDIA 独显扫描输出 + 高刷新率（本机 170 Hz）；完全没有给频率下限。</p>
-<h2 id="_4">排查<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<p><strong>判据看 P-state 和显存频率，不看核心频率</strong>：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>timeout<span class="w"> </span><span class="m">16</span><span class="w"> </span>nvidia-smi<span class="w"> </span>--query-gpu<span class="o">=</span>clocks.current.graphics,clocks.current.memory,utilization.gpu,pstate<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span>-lms<span class="w"> </span><span class="m">100</span><span class="w"> </span>--format<span class="o">=</span>csv
+<h1 id="_1">每隔几秒卡一下，显卡占用明明很高<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>没有报错、没有花屏，就是安静地每隔几秒卡那么一下：滑动工作区先卡一下、然后很顺、几秒后又卡一下；看视频或者带过渡动画的界面偶尔整段掉帧。mangohud 之类的占用显示很高，看着像"显卡明明在干活"。</p>
+<h2 id="_2">问题描述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>显卡空闲几秒后会掉进深睡档（P8，核心 300 MHz 上下、显存 405 MHz）。高刷桌面每秒要合成 170 帧，从深睡爬回来要几十毫秒，这几十毫秒就是看到的那一顿。它只在"刚要用显卡"的瞬间发生，所以表现为偶发、静默、没有任何日志。</p>
+<p>判据看 <strong>P-state 和显存频率</strong>，不看核心频率 —— P0 和 P4 的核心都可能跑在 2250 MHz 上下，真正差的是显存档：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>timeout<span class="w"> </span><span class="m">16</span><span class="w"> </span>nvidia-smi<span class="w"> </span>--query-gpu<span class="o">=</span>clocks.current.graphics,clocks.current.memory,utilization.gpu,pstate<span class="w"> </span>-lms<span class="w"> </span><span class="m">100</span><span class="w"> </span>--format<span class="o">=</span>csv
 </code></pre></div>
-<p>命中特征：<strong>占用已经 90%，核心/显存却还在低档</strong>（例如显存 405 MHz、P8）。</p>
-<p>只看核心频率会误判：P0 和 P4 下核心都可能是 2250 MHz，真正差的是<strong>显存档</strong>，所以 P-state 才是判据。</p>
-<h2 id="_5">原因<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p>GPU 空闲后会掉进深睡档（P8 / 300 MHz / 显存 405 MHz）。高刷桌面每秒要合成 170 帧，
-从深睡爬回来要几十毫秒——这几十毫秒就是看到的那一顿，而它只发生在「刚要用 GPU」的瞬间，
-所以表现为偶发、静默、无日志。</p>
-<h2 id="_6">解决办法<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>命中特征：占用已经 90%，核心和显存却还在低档（例如显存 405 MHz、P8）。</p>
+<h2 id="_3">解决办法<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <p>给一个频率地板，把深睡档挡掉：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>nvidia-smi<span class="w"> </span>-pm<span class="w"> </span><span class="m">1</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>sudo<span class="w"> </span>nvidia-smi<span class="w"> </span>-lgc<span class="w"> </span><span class="m">840</span>,3105<span class="w">        </span><span class="c1"># 地板 840；上界是 VBIOS 理论上限</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>sudo<span class="w"> </span>nvidia-smi<span class="w"> </span>-lgc<span class="w"> </span><span class="m">840</span>,3105
 </code></pre></div>
-<p>本机实测：地板 840 → 稳定 P5 / 840 MHz / 显存 810 MHz / 约 10 W。
-<strong>不需要额外钉显存</strong>（<code>-lmc</code>）。高刷仍然偶发的话把地板抬到 1000。</p>
-<p>锁频是<strong>易失</strong>的，重启失效 —— 用开机脚本按档位重下（本机 <code>niri-gpu-profile resume</code> 挂在
-<code>spawn-at-startup</code>，<code>normal</code> 档什么都不做）。</p>
-<h2 id="_7">怎么确认好了<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>nvidia-smi<span class="w"> </span>--query-gpu<span class="o">=</span>clocks.sm,clocks.current.memory,pstate,power.draw<span class="w"> </span>--format<span class="o">=</span>csv,noheader
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># 期望：P5，核心 ≥840，显存不再是 405</span>
-</code></pre></div>
-<h2 id="_8">参考<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>格式是 <code>min,max</code>，上界保持默认（VBIOS 的理论上限），只抬下限。本机地板 840 已经完全看不出掉帧：稳定在 P5 / 840 MHz / 显存 810 MHz / 约 10 W，<strong>不用额外钉显存</strong>（<code>-lmc</code>）。高刷下还偶发就抬到 1000。</p>
+<p>代价是待机功耗会高一点，但实测下来不明显。</p>
+<p>这个设置是易失的，重启就没了 —— 想要持久化就写成开机脚本，按显卡档位重新下一次（本机挂在 niri 的 <code>spawn-at-startup</code> 里）。</p>
 
 
 

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="混合显卡 + niri 的排错笔记：跨卡合成、频率过低、Chrome 硬解">
+        <meta name="description" content="混合显卡 + niri 上实际踩过的问题：画面闪烁撕裂、掉帧、游戏黑屏有声、Chrome 硬解、NTFS 读错">
       
       
         <meta name="author" content="KiritoLV">
@@ -25,7 +25,7 @@
     
     
       
-        <title>NTFS 大文件读到一半 EIO、目录读到某个 inode 就中断 - Arch 排错笔记</title>
+        <title>NTFS 大文件读到一半报 I/O 错误 - 我的 Arch Linux 问题记录</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ntfs-eio-inode" class="md-skip">
+        <a href="#ntfs-io" class="md-skip">
           跳转至
         </a>
       
@@ -92,7 +92,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="../.." title="Arch 排错笔记" class="md-header__button md-logo" aria-label="Arch 排错笔记" data-md-component="logo">
+    <a href="../.." title="我的 Arch Linux 问题记录" class="md-header__button md-logo" aria-label="我的 Arch Linux 问题记录" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -106,13 +106,13 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Arch 排错笔记
+            我的 Arch Linux 问题记录
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              NTFS 大文件读到一半 EIO、目录读到某个 inode 就中断
+              NTFS 大文件读到一半报 I/O 错误
             
           </span>
         </div>
@@ -230,13 +230,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Arch 排错笔记" class="md-nav__button md-logo" aria-label="Arch 排错笔记" data-md-component="logo">
+    <a href="../.." title="我的 Arch Linux 问题记录" class="md-nav__button md-logo" aria-label="我的 Arch Linux 问题记录" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Arch 排错笔记
+    我的 Arch Linux 问题记录
   </label>
   
     <div class="md-nav__source">
@@ -354,7 +354,7 @@
   <span class="md-ellipsis">
     
   
-    第一类：跨卡合成 —— 闪屏 / 撕裂 / 残影 / 单帧花屏
+    画面闪、撕、拖影，高刷下偶尔单帧花屏
   
 
     
@@ -382,7 +382,7 @@
   <span class="md-ellipsis">
     
   
-    第二类：静默偶发卡顿 —— 频率太低（锁频解决）
+    每隔几秒卡一下，显卡占用明明很高
   
 
     
@@ -410,7 +410,7 @@
   <span class="md-ellipsis">
     
   
-    第三类：游戏黑屏但有声音 —— 跨卡呈现路径没建立
+    游戏黑屏但有声音
   
 
     
@@ -501,7 +501,7 @@
   <span class="md-ellipsis">
     
   
-    Chrome 在 NVIDIA 上根本不会硬解：独显直连就换 Firefox，有核显才指定核显
+    Chrome 在 NVIDIA 上根本不做硬解
   
 
     
@@ -603,7 +603,7 @@
   <span class="md-ellipsis">
     
   
-    NTFS 大文件读到一半 EIO、目录读到某个 inode 就中断
+    NTFS 大文件读到一半报 I/O 错误
   
 
     
@@ -621,7 +621,7 @@
   <span class="md-ellipsis">
     
   
-    NTFS 大文件读到一半 EIO、目录读到某个 inode 就中断
+    NTFS 大文件读到一半报 I/O 错误
   
 
     
@@ -650,7 +650,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        现象
+        问题描述
       
     </span>
   </a>
@@ -661,62 +661,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        环境
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        排查
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        原因
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
         解决办法
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        怎么确认好了
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        参考
       
     </span>
   </a>
@@ -769,7 +714,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        现象
+        问题描述
       
     </span>
   </a>
@@ -780,62 +725,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        环境
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        排查
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        原因
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
         解决办法
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        怎么确认好了
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        参考
       
     </span>
   </a>
@@ -862,42 +752,15 @@
   
 
 
-<h1 id="ntfs-eio-inode">NTFS 大文件读到一半 EIO、目录读到某个 inode 就中断<a class="headerlink" href="#ntfs-eio-inode" title="Permanent link">&para;</a></h1>
-<div class="admonition info">
-<p class="admonition-title">一句话</p>
-<p>内核 <code>fs/ntfs</code>（新驱动）7.3.5 的已知 bug，7.3.6 修了；与 NTFS 卷是否 dirty 无关。</p>
-</div>
-<h2 id="_1">现象<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p>整盘顺序读到 52 GiB 左右开始 EIO，47 个文件读不出来；同样的文件用 <code>ntfs-3g</code> 读完全正常。</p>
-<h2 id="_2">环境<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>内核 7.3.5-zen1-1-zen / 内核自带 <code>fs/ntfs</code>；NTFS 卷 1.23 TiB 挂在 <code>/mnt/winshare</code>。</p>
-<h2 id="_3">排查<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>-E<span class="w"> </span><span class="s2">"ntfs|I/O error"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># 对照：同一批文件用 ntfs-3g 挂载读一遍（能读通 → 驱动问题，不是盘问题）</span>
-</code></pre></div>
-<h2 id="_4">原因<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<p>7.3.5 的 <code>fs/ntfs/attrib.c</code> 在计算属性长度时对 sparse/压缩属性少算了一个字段，
-越界后返回 EIO。7.3.6 的修复：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">-</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="o">-&gt;</span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">ATTR_IS_SPARSE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">ATTR_COMPRESSION_MASK</span><span class="p">))</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="o">+</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">a</span><span class="o">-&gt;</span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">ATTR_IS_SPARSE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">ATTR_COMPRESSION_MASK</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;&amp;</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="o">+</span><span class="w">     </span><span class="o">!</span><span class="n">a</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">.</span><span class="n">non_resident</span><span class="p">.</span><span class="n">lowest_vcn</span><span class="p">)</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">        </span><span class="n">min_len</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">a</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">.</span><span class="n">non_resident</span><span class="p">.</span><span class="n">compressed_size</span><span class="p">);</span>
-</code></pre></div>
-<h2 id="_5">解决办法<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p>两条路：</p>
-<ol>
-<li><strong>升级到含修复的内核</strong>（7.3.6 起）。</li>
-<li>临时验证可以只热替换模块（不装整内核、重启即回滚）：用 7.3.6 的 <code>fs/ntfs</code> 源码，
-   <code>make LOCALVERSION=-zen1-1-zen</code> 保证 vermagic 一致，<code>insmod</code> 自编的 <code>ntfs.ko</code>。</li>
-</ol>
-<p>判别加载的是哪个模块<strong>看 <code>coresize</code>，不看 vermagic</strong>：修复版 466944，原版 495616。</p>
-<h2 id="_6">怎么确认好了<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
-<p>同一批文件重跑不再出现 EIO。本机实测：139.2 GiB / 77.4 s / 1.80 GiB/s / <strong>0 EIO</strong>，
-原先 47 个 EIO 全部读通，原 50 个正常文件 0 回归。</p>
-<h2 id="_7">参考<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
-<ul>
-<li>内核 <code>fs/ntfs/attrib.c</code>（7.3.6 修复）</li>
-</ul>
+<h1 id="ntfs-io">NTFS 大文件读到一半报 I/O 错误<a class="headerlink" href="#ntfs-io" title="Permanent link">&para;</a></h1>
+<p>整盘顺序读，读到 50 多个 G 的时候开始 EIO，47 个文件读不出来；同样这些文件换成 <code>ntfs-3g</code> 挂载就一切正常，卷本身也没报错。</p>
+<h2 id="_1">问题描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>内核自带的 <code>fs/ntfs</code>（新驱动，不是 Paragon 的 <code>ntfs3</code>）在 7.3.5 上算属性长度时，对 sparse / 压缩属性少算了一个字段，越界之后返回 EIO。跟 NTFS 卷干不干净没关系，是驱动自己的 bug，7.3.6 修好了。</p>
+<p>对照一下就能确定不是盘的问题：同一批文件用 <code>ntfs-3g</code> 挂载读一遍能读通，那就是驱动。</p>
+<h2 id="_2">解决办法<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p><strong>升级到 7.3.6 或更新的内核</strong>，然后 <code>dmesg | grep -i ntfs</code> 确认没有新的报错。</p>
+<p>想先验证、不想装整内核的，可以只热替换这一个模块：拿 7.3.6 的 <code>fs/ntfs</code> 源码，用 <code>make LOCALVERSION=-zen1-1-zen</code> 保证 vermagic 和当前内核一致，编译出 <code>ntfs.ko</code> 之后 <code>insmod</code> 进去（重启就回滚，磁盘上什么都没改）。判据看 <code>coresize</code> 而不是 vermagic：修复版 466944，原版 495616。</p>
+<p>本机换模块之后重跑：139.2 GiB / 77.4 s / 1.80 GiB/s、<strong>0 EIO</strong>，原先读不出的 47 个文件全通，另外 50 个正常文件没有回归。</p>
 
 
 
